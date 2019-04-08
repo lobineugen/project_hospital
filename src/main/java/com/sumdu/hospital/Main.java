@@ -1,5 +1,7 @@
 package com.sumdu.hospital;
 
+import com.sumdu.hospital.dao.DAO;
+import com.sumdu.hospital.dao.SQLLiteDAOImpl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +10,8 @@ import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import java.sql.Connection;
 
 
 @SpringBootApplication
@@ -25,6 +29,10 @@ public class Main extends Application {
         springContext = SpringApplication.run(Main.class);
         fxmlLoader = new FXMLLoader();
         fxmlLoader.setControllerFactory(springContext::getBean);
+
+        DAO dao = (DAO) springContext.getBean("SQLLiteDAOImpl");
+        Connection connection = dao.getConnection();
+
     }
 
     @Override
