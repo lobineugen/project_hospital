@@ -1,0 +1,45 @@
+.breadcrambs {
+    -fx-border-bottom: 1px solid black; 
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tab-pane
+{
+-fx-tab-min-width: 370;
+-fx-tab-max-width: 370;
+    -fx-tab-min-height:50px;
+    -fx-tab-max-height:50px;
+}
+
+.tab {
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+
+.tab-pane .tab
+{
+    -fx-background-color: #585858;
+}
+.tab-pane .tab:selected
+{
+    -fx-background-color: #e6e6e6;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #cfcccc;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #2c2c2c;
+}
+
+
+.combo-box>.list-cell {
+    -fx-alignment: center;
+}
