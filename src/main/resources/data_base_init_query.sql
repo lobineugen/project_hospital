@@ -1,6 +1,7 @@
-create table  if not exists sm_patients (
-  full_name text PRIMARY KEY,
-  age integer,
-  address text,
-  diagnosis_main text
+CREATE TABLE IF NOT EXISTS sm_patients (
+  id             TEXT PRIMARY KEY,
+  full_name      TEXT,
+  age            INTEGER,
+  address        TEXT,
+  diagnosis_main TEXT
 );

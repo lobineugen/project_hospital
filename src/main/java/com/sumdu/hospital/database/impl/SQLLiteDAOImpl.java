@@ -20,7 +20,6 @@ public class SQLLiteDAOImpl implements DAO {
 
     @Override
     public Connection getConnection() {
-        LOGGER.debug("Get connection");
         try {
             connection = DriverManager.getConnection(url + dataBaseName);
             if (!connection.isClosed()) {
