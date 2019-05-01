@@ -1,13 +1,14 @@
 package com.sumdu.hospital.database.impl;
 
 import com.sumdu.hospital.database.DAO;
+import com.sumdu.hospital.model.Patient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Repository
 public class SQLLiteDAOImpl implements DAO {
@@ -40,5 +41,26 @@ public class SQLLiteDAOImpl implements DAO {
         } catch (SQLException e) {
             LOGGER.error("Can't close connection: ", e);
         }
+    }
+
+    @Override
+    public List<Patient> getAllPatients() {
+        getConnection();
+        List<Patient> result = new LinkedList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, full_name, age, address, diagnosis_main FROM sm_patients");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                result.add(new Patient(resultSet.getString("id"),
+                        resultSet.getString("full_name"),
+                        resultSet.getInt("age"),
+                        resultSet.getString("address"),
+                        resultSet.getString("diagnosis_main")));
+            }
+        } catch (SQLException e) {
+            LOGGER.debug("SQLException ", e);
+        }
+        closeConnection();
+        return result;
     }
 }

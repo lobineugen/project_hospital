@@ -11,7 +11,7 @@ public class MainController {
 
     @Autowired
     public MainController(InitStructure InitStructure) {
-        LOGGER.debug("Init Main Controller");
+        LOGGER.debug("Init MainController");
         InitStructure.initStructure();
     }
 }
