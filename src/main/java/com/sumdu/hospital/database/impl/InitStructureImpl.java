@@ -10,9 +10,11 @@ import org.springframework.stereotype.Repository;
 import org.sqlite.util.StringUtils;
 
 import java.io.*;
-import java.net.URL;
-import java.sql.*;
-import java.util.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class InitStructureImpl implements InitStructure {
@@ -35,13 +37,13 @@ public class InitStructureImpl implements InitStructure {
         if (checkStructure()) {
             ScriptRunner scriptRunner = new ScriptRunner(dao.getConnection());
             try {
-                URL url = this.getClass().getClassLoader().getResource(structureScriptName);
-                Reader reader = new BufferedReader(new FileReader(Objects.requireNonNull(url).getFile()));
+                InputStream in = getClass().getResourceAsStream("/" + structureScriptName);
+                Reader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
                 scriptRunner.setSendFullScript(true);
                 scriptRunner.runScript(reader);
                 dao.closeConnection();
-            } catch (FileNotFoundException e) {
-                LOGGER.error("FileNotFoundException", e);
+            } catch (UnsupportedEncodingException e) {
+                LOGGER.error("UnsupportedEncodingException ", e);
             }
         }
     }
@@ -49,9 +51,9 @@ public class InitStructureImpl implements InitStructure {
     private boolean checkStructure() {
         int count = 0;
         try {
+            InputStream in = getClass().getResourceAsStream("/" + tableListName);
             List<String> tableList = new ArrayList<>();
-            URL url = this.getClass().getClassLoader().getResource(tableListName);
-            BufferedReader reader = new BufferedReader(new FileReader(Objects.requireNonNull(url).getFile()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;
             while ((line = reader.readLine()) != null) {
                 LOGGER.debug("Table name: " + line);
@@ -66,10 +68,7 @@ public class InitStructureImpl implements InitStructure {
             LOGGER.debug("Table count: " + count);
             dao.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
             LOGGER.error("SQLException", e);
-        } catch (FileNotFoundException e) {
-            LOGGER.error("FileNotFoundException", e);
         } catch (IOException e) {
             LOGGER.error("IOException", e);
         }
