@@ -67,6 +67,11 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.27.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.ibatis</groupId>
+            <artifactId>ibatis-sqlmap</artifactId>
+            <version>3.0-beta-10</version>
+        </dependency>
 
     </dependencies>
 </project>

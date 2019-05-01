@@ -1,7 +1,5 @@
 package com.sumdu.hospital;
 
-import com.sumdu.hospital.dao.DAO;
-import com.sumdu.hospital.dao.SQLLiteDAOImpl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,44 +9,36 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.sql.Connection;
+import java.io.IOException;
 
 
 @SpringBootApplication
 public class Main extends Application {
     private ConfigurableApplicationContext springContext;
     private Parent rootNode;
-    private FXMLLoader fxmlLoader;
 
     public static void main(String[] args) {
-        launch(args);
+        Application.launch(args);
     }
 
     @Override
-    public void init() {
+    public void init() throws IOException {
         springContext = SpringApplication.run(Main.class);
-        fxmlLoader = new FXMLLoader();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         fxmlLoader.setControllerFactory(springContext::getBean);
-
-        DAO dao = (DAO) springContext.getBean("SQLLiteDAOImpl");
-        Connection connection = dao.getConnection();
-
+        rootNode = fxmlLoader.load();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        fxmlLoader.setLocation(getClass().getResource("/fxml/main.fxml"));
-        rootNode = fxmlLoader.load();
-
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Start");
-        Scene scene = new Scene(rootNode, 800, 600);
-        primaryStage.setScene(scene);
+        primaryStage.setScene(new Scene(rootNode, 800, 600));
         primaryStage.show();
     }
 
     @Override
     public void stop() {
-        springContext.stop();
+        springContext.close();
     }
 
 }
