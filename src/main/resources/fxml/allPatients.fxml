@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <?import javafx.scene.control.Label?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+<AnchorPane fx:id="allPatientsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="1175.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.sumdu.hospital.controller.AllPatientsController">
     <TableView fx:id="allPatients" layoutY="99.0" prefHeight="495.0" prefWidth="1175.0" AnchorPane.bottomAnchor="0.0"
@@ -22,9 +22,11 @@
             <TableColumn fx:id="age" prefWidth="175.0" text="Дата народження"/>
         </columns>
     </TableView>
-    <TextField fx:id="searchValue" layoutY="55.0" prefHeight="31.0" prefWidth="1084.0" promptText="Введіть ім'я" AnchorPane.leftAnchor="0.0"
+    <TextField fx:id="searchValue" layoutY="55.0" prefHeight="31.0" prefWidth="1084.0" promptText="Введіть ім'я"
+               AnchorPane.leftAnchor="0.0"
                AnchorPane.rightAnchor="91.0"/>
-    <Button fx:id="searchButton" layoutX="1091.0" layoutY="55.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="84.0" text="Пошук"
+    <Button fx:id="exportToXSLButton" layoutX="1091.0" layoutY="55.0" mnemonicParsing="false" prefHeight="31.0"
+            prefWidth="84.0" text="Експорт в XSL"
             AnchorPane.rightAnchor="0.0"/>
     <Button layoutX="-2.0" layoutY="14.0" mnemonicParsing="false" text="+" AnchorPane.leftAnchor="10.0"/>
     <Button layoutX="56.0" layoutY="14.0" mnemonicParsing="false" prefWidth="31.0" text="-"
