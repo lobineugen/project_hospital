@@ -44,11 +44,12 @@ public class SQLLiteDAOImpl implements DAO {
     }
 
     @Override
-    public List<Patient> getAllPatients() {
+    public List<Patient> getAllByName(String name) {
         getConnection();
         List<Patient> result = new LinkedList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, full_name, age, address, diagnosis_main FROM sm_patients");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM sm_patients WHERE lower(full_name) LIKE lower(?)");
+            preparedStatement.setString(1, "%" + name + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 result.add(new Patient(resultSet.getString("id"),

@@ -10,5 +10,5 @@ public interface DAO {
 
     void closeConnection();
 
-    List<Patient> getAllPatients();
+    List<Patient> getAllByName(String name);
 }

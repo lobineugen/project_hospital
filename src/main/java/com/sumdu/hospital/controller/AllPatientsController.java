@@ -4,13 +4,18 @@ import com.sumdu.hospital.database.DAO;
 import com.sumdu.hospital.model.Patient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class AllPatientsController {
@@ -23,13 +28,16 @@ public class AllPatientsController {
     private TableColumn<Patient, String> id;
     @FXML
     private TableColumn<Patient, Integer> age;
+    @FXML
+    private TextField searchValue;
     private DAO dao;
+    private ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
+
 
     @Autowired
     public AllPatientsController(DAO dao) {
         LOGGER.debug("Run AllPatientsController");
         this.dao = dao;
-
     }
 
     @FXML
@@ -38,8 +46,25 @@ public class AllPatientsController {
         fullName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         age.setCellValueFactory(new PropertyValueFactory<>("age"));
-        ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
-        patientObservableList.addAll(dao.getAllPatients());
+        patientObservableList.addAll(dao.getAllByName(""));
         allPatients.setItems(patientObservableList);
+
+        initializeEventHandlers();
+
+
+    }
+
+    private void initializeEventHandlers() {
+        searchValue.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                String inputText = searchValue.getText();
+                List<Patient> patients = dao.getAllByName(inputText);
+                patientObservableList.clear();
+                patientObservableList.addAll(patients);
+
+            }
+        });
+
     }
 }

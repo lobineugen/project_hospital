@@ -32,7 +32,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Start");
-        primaryStage.setScene(new Scene(rootNode, 800, 600));
+        primaryStage.setScene(new Scene(rootNode));
+        primaryStage.setMaximized(true);
+
         primaryStage.show();
     }
 
