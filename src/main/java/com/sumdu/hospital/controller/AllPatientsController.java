@@ -23,8 +23,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -64,8 +62,6 @@ public class AllPatientsController {
         allPatients.setItems(patientObservableList);
 
         initializeEventHandlers();
-
-
     }
 
     private void initializeEventHandlers() {
