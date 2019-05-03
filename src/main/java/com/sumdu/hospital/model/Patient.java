@@ -1,32 +1,31 @@
 package com.sumdu.hospital.model;
 
+import java.util.Date;
+
 public class Patient {
-    private String id;
+    private int patientID;
     private String fullName;
-    private int age;
+    private String passportID;
+    private Date dateOfBirth;
+    private String addressType;
     private String address;
+    private String phoneNumber;
     private String diagnosisMain;
+    private String workPlace;
 
-    public Patient(String id, String fullName, int age, String address, String diagnosisMain) {
-        this.id = id;
+    public Patient(int patientID, String fullName, String passportID, Date dateOfBirth) {
+        this.patientID = patientID;
         this.fullName = fullName;
-        this.age = age;
-        this.address = address;
-        this.diagnosisMain = diagnosisMain;
+        this.passportID = passportID;
+        this.dateOfBirth = dateOfBirth;
     }
 
-    public Patient(String id, String fullName, int age) {
-        this.id = id;
-        this.fullName = fullName;
-        this.age = age;
+    public int getPatientID() {
+        return patientID;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setPatientID(int patientID) {
+        this.patientID = patientID;
     }
 
     public String getFullName() {
@@ -37,12 +36,28 @@ public class Patient {
         this.fullName = fullName;
     }
 
-    public int getAge() {
-        return age;
+    public String getPassportID() {
+        return passportID;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setPassportID(String passportID) {
+        this.passportID = passportID;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
     }
 
     public String getAddress() {
@@ -53,11 +68,27 @@ public class Patient {
         this.address = address;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getDiagnosisMain() {
         return diagnosisMain;
     }
 
     public void setDiagnosisMain(String diagnosisMain) {
         this.diagnosisMain = diagnosisMain;
+    }
+
+    public String getWorkPlace() {
+        return workPlace;
+    }
+
+    public void setWorkPlace(String workPlace) {
+        this.workPlace = workPlace;
     }
 }

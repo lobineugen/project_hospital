@@ -8,14 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +21,19 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.List;
+import java.util.*;
+
+import static com.sumdu.hospital.constants.Constants.*;
 
 @Component
 public class AllPatientsController {
     private static final Logger LOGGER = Logger.getLogger(AllPatientsController.class);
     @FXML
+    public Button deleteCurrent;
+    @FXML
     private AnchorPane allPatientsPane;
     @FXML
     private TableView<Patient> allPatients;
-    @FXML
-    private TableColumn<Patient, String> fullName;
-    @FXML
-    private TableColumn<Patient, String> id;
-    @FXML
-    private TableColumn<Patient, Integer> age;
     @FXML
     private TextField searchValue;
     @FXML
@@ -45,23 +41,53 @@ public class AllPatientsController {
     private DAO dao;
     private ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
     private ApplicationContext context;
+    private ShowDialog showDialog;
 
     @Autowired
-    public AllPatientsController(DAO dao) {
+    public AllPatientsController(DAO dao, ShowDialog showDialog) {
         LOGGER.debug("Run AllPatientsController");
         this.dao = dao;
+        this.showDialog = showDialog;
     }
 
     @FXML
     private void initialize() {
         LOGGER.debug("Run initialize method");
-        fullName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        age.setCellValueFactory(new PropertyValueFactory<>("age"));
-        patientObservableList.addAll(dao.getAllByName(""));
+        initTable(dao.getTableDefinition());
+        patientObservableList.addAll(dao.getPatientByName(""));
         allPatients.setItems(patientObservableList);
-
         initializeEventHandlers();
+    }
+
+    private void initTable(Map<String, String> definition) {
+        LOGGER.debug(definition.size());
+        List<TableColumn<Patient, ?>> collection = new ArrayList<>();
+        label:
+        for (Map.Entry<String, String> entry : definition.entrySet()) {
+            LOGGER.debug("column name: " + entry.getKey() + " , type: " + entry.getValue());
+            TableColumn<Patient, ?> column;
+            switch (entry.getValue()) {
+                case TEXT:
+                    column = new TableColumn<Patient, String>();
+                    break;
+                case INTEGER:
+                    column = new TableColumn<Patient, Integer>();
+                    break;
+                case DATE:
+                    column = new TableColumn<Patient, Date>();
+                    break;
+                default:
+                    continue label;
+            }
+            if (entry.getKey().equals(PATIENT_ID)) {
+                column.setVisible(false);
+            }
+            column.setText(FIELD_NAME_RATIO.get(entry.getKey()));
+            column.setCellValueFactory(new PropertyValueFactory<>(entry.getKey()));
+            collection.add(column);
+        }
+        Collections.reverse(collection);
+        allPatients.getColumns().addAll(collection);
     }
 
     private void initializeEventHandlers() {
@@ -69,13 +95,33 @@ public class AllPatientsController {
             @Override
             public void handle(KeyEvent event) {
                 String inputText = searchValue.getText();
-                List<Patient> patients = dao.getAllByName(inputText);
+                List<Patient> patients = dao.getPatientByName(inputText);
                 patientObservableList.clear();
                 patientObservableList.addAll(patients);
 
             }
         });
 
+        deleteCurrent.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Patient patient = allPatients.getSelectionModel().getSelectedItem();
+                Optional<String> result = showDialog.showTextInputDialog("Підтвердити видалення",
+                        "Ви дійсно хочете видалити запис про пацієнта - \"" + patient.getFullName()
+                                + "\"\nВідновити дані буде неможливо!",
+                        "Введіть повне ім'я паціента для підтвердження", allPatientsPane);
+                if (result.isPresent()) {
+                    if (result.get().equals(patient.getFullName())) {
+                        dao.deleteByID(patient.getPatientID());
+                        patientObservableList.remove(patient);
+                        showDialog.showInformationDialog("Запис про пацієнта повністю вилучено!", allPatientsPane);
+                    } else {
+                        showDialog.showInformationDialog("Повне ім'я введено невірно, запис про пацієнт не буде видалений!", allPatientsPane);
+                    }
+                }
+
+            }
+        });
         exportToXSLButton.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -86,8 +132,7 @@ public class AllPatientsController {
                 if (file != null) {
                     Export export = context.getBean(Export.class);
                     export.export(dao, file);
-                    ShowDialog showDialog = context.getBean(ShowDialog.class);
-                    showDialog.showInformationDialog("Дані успішно експортовані в Excel");
+                    showDialog.showInformationDialog("Дані успішно експортовані в Excel", allPatientsPane);
                 }
 
             }

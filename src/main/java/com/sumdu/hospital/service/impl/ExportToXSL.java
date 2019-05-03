@@ -25,7 +25,7 @@ public class ExportToXSL implements Export {
     public void export(DAO dao, File file) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("База данных");
-        List<Patient> list = dao.getAllByName("");
+        List<Patient> list = dao.getPatientByName("");
         int rownum = 0;
         Cell cell;
         Row row;
@@ -47,9 +47,9 @@ public class ExportToXSL implements Export {
             cell = row.createCell(0, CellType.STRING);
             cell.setCellValue(patient.getFullName());
             cell = row.createCell(1, CellType.STRING);
-            cell.setCellValue(patient.getId());
+            cell.setCellValue(patient.getPatientID());
             cell = row.createCell(2, CellType.NUMERIC);
-            cell.setCellValue(patient.getAge());
+            cell.setCellValue(patient.getDateOfBirth());
         }
 
         try (FileOutputStream outFile = new FileOutputStream(file)){

@@ -4,11 +4,16 @@ import com.sumdu.hospital.model.Patient;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 public interface DAO {
     Connection getConnection();
 
     void closeConnection();
 
-    List<Patient> getAllByName(String name);
+    List<Patient> getPatientByName(String name);
+
+    Map<String, String> getTableDefinition();
+
+    void deleteByID(int patientID);
 }

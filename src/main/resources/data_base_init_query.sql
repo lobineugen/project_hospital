@@ -1,7 +1,14 @@
 CREATE TABLE IF NOT EXISTS sm_patients (
-  id             TEXT PRIMARY KEY,
-  full_name      TEXT,
-  age            INTEGER,
-  address        TEXT,
-  diagnosis_main TEXT
+  patientID     INTEGER PRIMARY KEY,
+  fullName      TEXT,
+  passportID    TEXT,
+  dateOfBirth   DATE,
+  addressType   TEXT,
+  address       TEXT,
+  phoneNumber   TEXT,
+  diagnosisMain TEXT,
+  workPlace     TEXT
 );
+CREATE INDEX sm_patients_id_index
+  ON sm_patients (patientID);
+
