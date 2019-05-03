@@ -1,5 +1,9 @@
 package com.sumdu.hospital.constants;
 
+import javafx.util.StringConverter;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +13,8 @@ public class Constants {
     public static final String INTEGER = "INTEGER";
     public static final String PATIENT_ID = "patientID";
     public static final Map<String, String> FIELD_NAME_RATIO = new HashMap<>();
+    public static final String INFORMATIOND_DIALOG = "Інформаційний діалог";
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     static {
         FIELD_NAME_RATIO.put("fullName", "ПІБ");
@@ -20,5 +26,24 @@ public class Constants {
         FIELD_NAME_RATIO.put("workPlace", "Місце роботи, посада");
         FIELD_NAME_RATIO.put("patientID", "№");
         FIELD_NAME_RATIO.put("addressType", "Тип адреса");
+    }
+
+    public static StringConverter<LocalDate> getStringConverter() {
+        return new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate object) {
+                if (object == null)
+                    return "";
+                return DATE_TIME_FORMATTER.format(object);
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string == null || string.trim().isEmpty()) {
+                    return null;
+                }
+                return LocalDate.parse(string, DATE_TIME_FORMATTER);
+            }
+        };
     }
 }

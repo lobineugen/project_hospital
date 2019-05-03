@@ -8,12 +8,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +62,9 @@ public class AllPatientsController {
     }
 
     private void initTable(Map<String, String> definition) {
-        LOGGER.debug(definition.size());
         List<TableColumn<Patient, ?>> collection = new ArrayList<>();
         label:
         for (Map.Entry<String, String> entry : definition.entrySet()) {
-            LOGGER.debug("column name: " + entry.getKey() + " , type: " + entry.getValue());
             TableColumn<Patient, ?> column;
             switch (entry.getValue()) {
                 case TEXT:
