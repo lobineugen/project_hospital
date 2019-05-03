@@ -83,10 +83,13 @@ public class AllPatientsController {
                 FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Microsoft Office Excel (97-2003)", "*.xls");
                 fileChooser.getExtensionFilters().add(extFilter);
                 File file = fileChooser.showSaveDialog(allPatientsPane.getScene().getWindow());
-                Export export = context.getBean(Export.class);
-                export.export(dao, file);
-                ShowDialog showDialog = context.getBean(ShowDialog.class);
-                showDialog.showInformationDialog("Дані успішно експортовані в Excel");
+                if (file != null) {
+                    Export export = context.getBean(Export.class);
+                    export.export(dao, file);
+                    ShowDialog showDialog = context.getBean(ShowDialog.class);
+                    showDialog.showInformationDialog("Дані успішно експортовані в Excel");
+                }
+
             }
         });
 
