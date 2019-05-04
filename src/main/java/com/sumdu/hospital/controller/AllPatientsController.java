@@ -47,6 +47,7 @@ public class AllPatientsController {
 
     @Autowired
     public AllPatientsController(DAO dao, ShowDialog showDialog) {
+        System.out.println(this);
         LOGGER.debug("Run AllPatientsController");
         this.dao = dao;
         this.showDialog = showDialog;
@@ -56,9 +57,8 @@ public class AllPatientsController {
     private void initialize() {
         LOGGER.debug("Run initialize method");
         initTable(dao.getTableDefinition());
-        patientObservableList.addAll(dao.getPatientByName(""));
-        allPatients.setItems(patientObservableList);
         initializeEventHandlers();
+
     }
 
     private void initTable(Map<String, String> definition) {
@@ -105,6 +105,9 @@ public class AllPatientsController {
         deleteCurrent.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                if (allPatients.getSelectionModel().isEmpty()) {
+                    return;
+                }
                 Patient patient = allPatients.getSelectionModel().getSelectedItem();
                 Optional<String> result = showDialog.showTextInputDialog("Підтвердити видалення",
                         "Ви дійсно хочете видалити запис про пацієнта - \"" + patient.getFullName()
@@ -144,6 +147,13 @@ public class AllPatientsController {
     @Autowired
     public void context(ApplicationContext context) {
         this.context = context;
+    }
+
+
+    public void fillTableView() {
+        patientObservableList.clear();
+        patientObservableList.addAll(dao.getPatientByName(""));
+        allPatients.setItems(patientObservableList);
     }
 
 }

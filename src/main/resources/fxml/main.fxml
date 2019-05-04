@@ -33,14 +33,12 @@
         <Tab text="Виписка">
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                    <fx:include source="medicalCard.fxml"/>
+
                 </AnchorPane>
             </content>
         </Tab>
-        <Tab text="База даних">
-            <content>
-                <fx:include source="allPatients.fxml"/>
-            </content>
+        <Tab text="База даних" fx:id="allPatientsTab">
+            <fx:include source="allPatients.fxml"/>
         </Tab>
     </tabs>
 </TabPane>

@@ -2,6 +2,7 @@ package com.sumdu.hospital.constants;
 
 import javafx.util.StringConverter;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -13,8 +14,10 @@ public class Constants {
     public static final String INTEGER = "INTEGER";
     public static final String PATIENT_ID = "patientID";
     public static final Map<String, String> FIELD_NAME_RATIO = new HashMap<>();
-    public static final String INFORMATIOND_DIALOG = "Інформаційний діалог";
+    public static final String INFORMATION_DIALOG = "Інформаційний діалог";
+    public static final String WARNING_DIALOG = "Попереджувальний діалог";
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final SimpleDateFormat MILLISECOND_FORMAT = new SimpleDateFormat("SSS");
 
     static {
         FIELD_NAME_RATIO.put("fullName", "ПІБ");
@@ -22,7 +25,6 @@ public class Constants {
         FIELD_NAME_RATIO.put("dateOfBirth", "Дата народження");
         FIELD_NAME_RATIO.put("address", "Місце проживання");
         FIELD_NAME_RATIO.put("phoneNumber", "Номер телефону");
-        FIELD_NAME_RATIO.put("diagnosisMain", "Діагноз основний");
         FIELD_NAME_RATIO.put("workPlace", "Місце роботи, посада");
         FIELD_NAME_RATIO.put("patientID", "№");
         FIELD_NAME_RATIO.put("addressType", "Тип адреса");

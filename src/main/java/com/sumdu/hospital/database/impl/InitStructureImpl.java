@@ -39,7 +39,6 @@ public class InitStructureImpl implements InitStructure {
             try {
                 InputStream in = getClass().getResourceAsStream("/" + structureScriptName);
                 Reader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-                scriptRunner.setSendFullScript(true);
                 scriptRunner.runScript(reader);
                 dao.closeConnection();
             } catch (UnsupportedEncodingException e) {
@@ -56,7 +55,6 @@ public class InitStructureImpl implements InitStructure {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;
             while ((line = reader.readLine()) != null) {
-                LOGGER.debug("Table name: " + line);
                 tableList.add("'" + line + "'");
             }
             String checkQuery = "SELECT count(*) AS count FROM sqlite_master WHERE tbl_name IN (" + StringUtils.join(tableList, ",") + ") AND type = 'table'";

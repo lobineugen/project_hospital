@@ -16,4 +16,10 @@ public interface DAO {
     Map<String, String> getTableDefinition();
 
     void deleteByID(int patientID);
+
+    void createPatient(Patient patient);
+
+    void updatePatient(Patient patient);
+
+    int getID();
 }

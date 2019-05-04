@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-            minWidth="-Infinity" prefWidth="1171.0"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.sumdu.hospital.controller.PatientCabinetController"
->
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            minHeight="-Infinity"
+            minWidth="-Infinity" prefWidth="1171.0" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="com.sumdu.hospital.controller.PatientCabinetController">
     <children>
         <GridPane hgap="15.0" layoutX="14.0" layoutY="14.0" maxWidth="1.7976931348623157E308" prefHeight="848.0"
                   prefWidth="1171.0" vgap="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
@@ -37,102 +50,90 @@
                 <RowConstraints maxHeight="149.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="97.0" minHeight="7.0" prefHeight="51.0" vgrow="SOMETIMES"/>
             </rowConstraints>
-            <children>
-                <Label prefHeight="21.0" text="ПІБ:"/>
-                <TextField fx:id="fullName" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
-                <Label text="Номер документа (паспорта):" GridPane.rowIndex="1"/>
-                <TextField promptText="АА00000" fx:id="passportID" GridPane.columnIndex="1"
-                           GridPane.rowIndex="1">
-                    <tooltip>
-                        <Tooltip text="Введіть значення в форматі АА00000, наприклад МС547879."/>
-                    </tooltip>
-                </TextField>
-                <Label text="Дата народження:" GridPane.rowIndex="2"/>
-                <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER"
-                      GridPane.rowIndex="2">
-                    <Label text="Вік:"/>
-                    <Label fx:id="age"/>
-                </HBox>
-                <Label text="Місце проживання:" GridPane.rowIndex="3"/>
-                <HBox alignment="CENTER" spacing="30.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                    <children>
-                        <RadioButton fx:id="cityRadio" mnemonicParsing="false" text="Місто">
-                            <toggleGroup>
-                                <ToggleGroup fx:id="livingPlace"/>
-                            </toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="villageRadio" mnemonicParsing="false" text="Село"
-                                     toggleGroup="$livingPlace"/>
-                    </children>
-                </HBox>
-                <Label text="Номер телефону:" GridPane.rowIndex="4"/>
-                <Label text="Місце роботи, посада:" GridPane.rowIndex="5"/>
-                <TextField fx:id="address" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3"/>
-                <TextField fx:id="phoneNumber" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-                <TextField fx:id="job" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5"/>
-                <Label text="Діагноз:" GridPane.rowIndex="6"/>
-                <Label text="основний" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-                <Label text="ускладнення основного діагнозу" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
-                <Label text="ускладнення ПВТ" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
-                <Label text="супутній" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
-                <Label text="Алергічні реакції:" GridPane.rowIndex="10"/>
-                <Label text="Обстеження ОГК:" GridPane.rowIndex="11"/>
-                <Label text="Початок ПВТ:" GridPane.rowIndex="12"/>
-                <Label text="Закінчення ПВТ:" GridPane.columnIndex="2" GridPane.halignment="RIGHT"
-                       GridPane.rowIndex="12"/>
-                <Label text="Початок повторної ПВТ:" GridPane.rowIndex="13"/>
-                <Label text="Закінчення повторної ПВТ:" GridPane.columnIndex="2" GridPane.halignment="RIGHT"
-                       GridPane.rowIndex="13"/>
-                <TextField fx:id="allergicReactions" GridPane.columnIndex="1" GridPane.columnSpan="3"
-                           GridPane.rowIndex="10"/>
-                <TextField fx:id="ogkSurvey" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="11"/>
-                <Label maxHeight="1.7976931348623157E308" prefHeight="81.0" prefWidth="175.0"
-                       text="Медична картка стаціонарного хворого:" wrapText="true" GridPane.rowIndex="14"/>
-                <Label maxHeight="1.7976931348623157E308" prefHeight="73.0" prefWidth="175.0"
-                       text="Медична картка амбулаторного хворого:" wrapText="true" GridPane.rowIndex="15"/>
-                <Button fx:id="save" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                        mnemonicParsing="false" text="Зберегти" GridPane.columnIndex="3" GridPane.rowIndex="16"
-                        GridPane.vgrow="ALWAYS"/>
-                <Button fx:id="medicalCardOfAmbulatoryPatient" maxHeight="1.7976931348623157E308"
-                        maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Button" GridPane.columnIndex="1"
-                        GridPane.rowIndex="15"/>
-                <TextArea fx:id="mainDiagnosis" prefHeight="200.0" prefWidth="200.0" wrapText="true"
-                          GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6"/>
-                <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="-Infinity"
-                            GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="14">
-                    <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                            <children>
-                                <Button fx:id="addMedicalCardToStationaryPatient" maxWidth="1.7976931348623157E308"
-                                        mnemonicParsing="false" prefHeight="91.0" prefWidth="68.0" text="+"
-                                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                        AnchorPane.topAnchor="0.0"/>
-                                <HBox fx:id="medicalCardsForStationaryPatientsContainer" alignment="CENTER_LEFT"
-                                      layoutX="69.0" prefWidth="1206.0" AnchorPane.bottomAnchor="0.0"
-                                      AnchorPane.leftAnchor="69.0" AnchorPane.rightAnchor="0.0"
-                                      AnchorPane.topAnchor="0.0"/>
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </ScrollPane>
-                <DatePicker fx:id="pvtStart" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-                            GridPane.rowIndex="12"/>
-                <DatePicker fx:id="repeatPvtStart" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-                            GridPane.rowIndex="13"/>
-                <DatePicker fx:id="dateOfBirth" maxWidth="1.7976931348623157E308" prefHeight="31.0"
-                            prefWidth="193.0"
-                            GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                <DatePicker fx:id="pvtEnd" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3"
-                            GridPane.rowIndex="12"/>
-                <DatePicker fx:id="repeatPvtEnd" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3"
-                            GridPane.rowIndex="13"/>
-                <TextArea fx:id="mainDiagnosisComplication" prefHeight="200.0" prefWidth="200.0" wrapText="true"
-                          GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7"/>
-                <TextArea fx:id="pvtComplication" prefHeight="200.0" prefWidth="200.0" wrapText="true"
-                          GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="8"/>
-                <TextArea fx:id="concomitantDiagnosis" prefHeight="200.0" prefWidth="200.0" wrapText="true"
-                          GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="9"/>
-            </children>
+            <Label prefHeight="21.0" text="ПІБ:"/>
+            <TextField fx:id="fullName" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+            <Label text="Номер документа (паспорта):" GridPane.rowIndex="1"/>
+            <TextField fx:id="passportID" promptText="АА00000" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <tooltip>
+                    <Tooltip text="Введіть значення в форматі АА00000, наприклад МС547879."/>
+                </tooltip>
+            </TextField>
+            <Label text="Дата народження:" GridPane.rowIndex="2"/>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER"
+                  GridPane.rowIndex="2">
+                <Label text="Вік:"/>
+                <Label fx:id="age"/>
+            </HBox>
+            <Label text="Місце проживання:" GridPane.rowIndex="3"/>
+            <HBox alignment="CENTER" spacing="30.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <RadioButton fx:id="cityRadio" mnemonicParsing="false" text="Місто" selected="true">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="addressType"/>
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="villageRadio" mnemonicParsing="false" text="Село" toggleGroup="$addressType"/>
+            </HBox>
+            <Label text="Номер телефону:" GridPane.rowIndex="4"/>
+            <Label text="Місце роботи, посада:" GridPane.rowIndex="5"/>
+            <TextField fx:id="address" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3"/>
+            <TextField fx:id="phoneNumber" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <TextField fx:id="workPlace" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5"/>
+            <Label text="Діагноз:" GridPane.rowIndex="6"/>
+            <Label text="основний" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+            <Label text="ускладнення основного діагнозу" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+            <Label text="ускладнення ПВТ" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+            <Label text="супутній" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+            <Label text="Алергічні реакції:" GridPane.rowIndex="10"/>
+            <Label text="Обстеження ОГК:" GridPane.rowIndex="11"/>
+            <Label text="Початок ПВТ:" GridPane.rowIndex="12"/>
+            <Label text="Закінчення ПВТ:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12"/>
+            <Label text="Початок повторної ПВТ:" GridPane.rowIndex="13"/>
+            <Label text="Закінчення повторної ПВТ:" GridPane.columnIndex="2" GridPane.halignment="RIGHT"
+                   GridPane.rowIndex="13"/>
+            <TextField fx:id="allergicReactions" GridPane.columnIndex="1" GridPane.columnSpan="3"
+                       GridPane.rowIndex="10"/>
+            <TextField fx:id="ogkSurvey" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="11"/>
+            <Label maxHeight="1.7976931348623157E308" prefHeight="81.0" prefWidth="175.0"
+                   text="Медична картка стаціонарного хворого:" wrapText="true" GridPane.rowIndex="14"/>
+            <Label maxHeight="1.7976931348623157E308" prefHeight="73.0" prefWidth="175.0"
+                   text="Медична картка амбулаторного хворого:" wrapText="true" GridPane.rowIndex="15"/>
+            <Button fx:id="save" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                    mnemonicParsing="false" text="Зберегти" GridPane.columnIndex="3" GridPane.rowIndex="16"
+                    GridPane.vgrow="ALWAYS"/>
+            <Button fx:id="medicalCardOfAmbulatoryPatient" maxHeight="1.7976931348623157E308"
+                    maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Button" GridPane.columnIndex="1"
+                    GridPane.rowIndex="15"/>
+            <TextArea fx:id="mainDiagnosis" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true"
+                      GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6"/>
+            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="-Infinity"
+                        GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="14">
+                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <Button fx:id="addMedicalCardToStationaryPatient" maxWidth="1.7976931348623157E308"
+                            mnemonicParsing="false" prefHeight="91.0" prefWidth="68.0" text="+"
+                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    <HBox fx:id="medicalCardsForStationaryPatientsContainer" alignment="CENTER_LEFT" layoutX="69.0"
+                          prefWidth="1206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="69.0"
+                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                </AnchorPane>
+            </ScrollPane>
+            <DatePicker fx:id="pvtStart" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
+                        GridPane.rowIndex="12"/>
+            <DatePicker fx:id="repeatPvtStart" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
+                        GridPane.rowIndex="13"/>
+            <DatePicker fx:id="dateOfBirth" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="193.0"
+                        GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <DatePicker fx:id="pvtEnd" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3"
+                        GridPane.rowIndex="12"/>
+            <DatePicker fx:id="repeatPvtEnd" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3"
+                        GridPane.rowIndex="13"/>
+            <TextArea fx:id="mainDiagnosisComplication" editable="false" prefHeight="200.0" prefWidth="200.0"
+                      wrapText="true" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7"/>
+            <TextArea fx:id="pvtComplication" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true"
+                      GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="8"/>
+            <TextArea fx:id="concomitantDiagnosis" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true"
+                      GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="9"/>
+            <TextField fx:id="patientID" prefHeight="25.0" prefWidth="178.0" visible="false" GridPane.columnIndex="1"
+                       GridPane.rowIndex="16"/>
         </GridPane>
     </children>
 </AnchorPane>

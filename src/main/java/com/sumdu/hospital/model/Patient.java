@@ -10,15 +10,19 @@ public class Patient {
     private String addressType;
     private String address;
     private String phoneNumber;
-    private String diagnosisMain;
     private String workPlace;
 
-    public Patient(int patientID, String fullName, String passportID, Date dateOfBirth) {
+    public Patient(int patientID, String fullName, String passportID) {
         this.patientID = patientID;
         this.fullName = fullName;
         this.passportID = passportID;
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = null;
+        this.addressType = null;
+        this.address = null;
+        this.phoneNumber = null;
+        this.workPlace = null;
     }
+
 
     public int getPatientID() {
         return patientID;
@@ -74,14 +78,6 @@ public class Patient {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getDiagnosisMain() {
-        return diagnosisMain;
-    }
-
-    public void setDiagnosisMain(String diagnosisMain) {
-        this.diagnosisMain = diagnosisMain;
     }
 
     public String getWorkPlace() {
