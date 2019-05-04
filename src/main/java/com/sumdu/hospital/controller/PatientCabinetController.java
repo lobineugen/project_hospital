@@ -157,8 +157,7 @@ public class PatientCabinetController {
                             LOGGER.error("IOException:", e);
                         }
                         Button button = new Button("Кабиент пациент >");
-                        button.addEventHandler(MouseEvent.MOUSE_CLICKED, helper.addBackReference(mainController, patientCabinet, button));
-                        mainController.addBreadCrumb(button);
+                        mainController.addBreadCrumb(button, patientCabinet, 1);
                     }
                 });
                 newCard.setPrefHeight(91);

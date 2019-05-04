@@ -5,15 +5,19 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
 
 @Component
 public class MainController {
@@ -29,6 +33,7 @@ public class MainController {
     @FXML
     public ScrollPane content;
     private ApplicationContext context;
+    private HashMap<Integer, Node> breadCrumbs = new HashMap<>();
 
     @Autowired
     public MainController(InitStructure InitStructure) {
@@ -57,13 +62,17 @@ public class MainController {
         this.context = context;
     }
 
-    public void addBreadCrumb(Node node) {
-        LOGGER.debug("add: " + node);
-        breadCrumbsContainer.getChildren().add(node);
+    public void addBreadCrumb(Button button, Node node, int level) {
+        LOGGER.debug("add: " + button);
+        breadCrumbs.put(level, button);
+        button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                content.setContent(node);
+                breadCrumbsContainer.getChildren().remove(button);
+            }
+        });
+        breadCrumbsContainer.getChildren().add(button);
     }
 
-    public void deleteBreadCrumb(Node node) {
-        LOGGER.debug("delete: " + node);
-        breadCrumbsContainer.getChildren().remove(node);
-    }
 }

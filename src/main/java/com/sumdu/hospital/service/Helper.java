@@ -53,14 +53,4 @@ public class Helper {
                 (Pane) control.getParent());
         return false;
     }
-
-    public EventHandler<MouseEvent> addBackReference(MainController mainController, Node node, Button button) {
-        return new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mainController.content.setContent(node);
-                mainController.deleteBreadCrumb(button);
-            }
-        };
-    }
 }

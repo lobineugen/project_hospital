@@ -1,0 +1,2 @@
+[![Java 8+](https://img.shields.io/badge/java-8%2b-green.svg)](http://www.oracleConnect.com/technetwork/java/javase/downloads/index.html)
+[![Build Status](https://semaphoreci.com/api/v1/lobineugen/project_hospital/branches/master/shields_badge.svg)](https://semaphoreci.com/lobineugen/project_hospital)
