@@ -17,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 
 import static com.sumdu.hospital.constants.Constants.getStringConverter;
 
@@ -82,6 +84,9 @@ public class PatientCabinetController {
             @Override
             public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
                 LocalDate now = LocalDate.now();
+                if (newValue == null) {
+                    return;
+                }
                 Period diff = Period.between(newValue, now);
                 age.setText(String.valueOf(diff.getYears()));
             }
@@ -108,7 +113,7 @@ public class PatientCabinetController {
                 currentPatient = new Patient(id,
                         fullName.getText(),
                         passportID.getText());
-                currentPatient.setDateOfBirth(java.sql.Date.valueOf(dateOfBirth.getValue()));
+                currentPatient.setDateOfBirth(Date.valueOf(dateOfBirth.getValue()));
                 currentPatient.setAddress(address.getText());
                 currentPatient.setWorkPlace(workPlace.getText());
                 currentPatient.setPhoneNumber(phoneNumber.getText());
@@ -138,6 +143,32 @@ public class PatientCabinetController {
     @Autowired
     public void context(ApplicationContext context) {
         this.context = context;
+    }
+
+    public void clearFields() {
+        patientID.setText("");
+        fullName.setText("");
+        passportID.setText("");
+        dateOfBirth.setValue(null);
+        phoneNumber.setText("");
+        workPlace.setText("");
+        age.setText("");
+        address.setText("");
+    }
+
+    public void fillFields(Patient patient) {
+        patientID.setText(String.valueOf(patient.getPatientID()));
+        fullName.setText(patient.getFullName());
+        passportID.setText(patient.getPassportID());
+        dateOfBirth.setValue(patient.getDateOfBirth().toLocalDate());
+        phoneNumber.setText(patient.getPhoneNumber());
+        workPlace.setText(patient.getWorkPlace());
+        address.setText(patient.getAddress());
+        for (Toggle toggle : addressType.getToggles()) {
+            if (((RadioButton) toggle).getText().equals(patient.getAddressType())) {
+                toggle.setSelected(true);
+            }
+        }
     }
 
 }

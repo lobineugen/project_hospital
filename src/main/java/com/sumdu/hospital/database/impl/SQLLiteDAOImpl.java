@@ -48,7 +48,7 @@ public class SQLLiteDAOImpl implements DAO {
         getConnection();
         List<Patient> result = new LinkedList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT patientID,fullName,passportID,dateOfBirth,addressType, address , phoneNumber,workPlace  FROM sm_patients WHERE lower(fullName) LIKE lower(?) LIMIT 500");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT patientID,fullName,passportID,dateOfBirth,addressType, address , phoneNumber,workPlace  FROM sm_patients WHERE lower(fullName) LIKE lower(?)");
             preparedStatement.setString(1, "%" + name + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

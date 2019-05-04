@@ -6,12 +6,10 @@ import com.sumdu.hospital.service.Export;
 import com.sumdu.hospital.service.ShowDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -58,6 +56,23 @@ public class AllPatientsController {
         LOGGER.debug("Run initialize method");
         initTable(dao.getTableDefinition());
         initializeEventHandlers();
+        final ContextMenu contextMenu = new ContextMenu();
+        MenuItem edit = new MenuItem("Редагувати");
+        contextMenu.getItems().add(edit);
+        edit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (allPatients.getSelectionModel().isEmpty()) {
+                    return;
+                }
+                Patient patient = allPatients.getSelectionModel().getSelectedItem();
+                PatientCabinetController patientCabinetController = context.getBean(PatientCabinetController.class);
+                patientCabinetController.fillFields(patient);
+                MainController mainController = context.getBean(MainController.class);
+                mainController.mainTabPane.getSelectionModel().select(mainController.patientCabinet);
+            }
+        });
+        allPatients.setContextMenu(contextMenu);
 
     }
 
@@ -106,6 +121,7 @@ public class AllPatientsController {
             @Override
             public void handle(MouseEvent event) {
                 if (allPatients.getSelectionModel().isEmpty()) {
+                    showDialog.showInformationDialog("Нічого не вибрано. Видалення неможливо!", allPatientsPane);
                     return;
                 }
                 Patient patient = allPatients.getSelectionModel().getSelectedItem();
@@ -117,6 +133,10 @@ public class AllPatientsController {
                     if (result.get().equals(patient.getFullName())) {
                         dao.deleteByID(patient.getPatientID());
                         patientObservableList.remove(patient);
+                        PatientCabinetController patientCabinetController = context.getBean(PatientCabinetController.class);
+                        if (Integer.valueOf(patientCabinetController.patientID.getText()) == patient.getPatientID()) {
+                            patientCabinetController.clearFields();
+                        }
                         showDialog.showInformationDialog("Запис про пацієнта повністю вилучено!", allPatientsPane);
                     } else {
                         showDialog.showInformationDialog("Повне ім'я введено невірно, запис про пацієнт не буде видалений!", allPatientsPane);
@@ -155,5 +175,6 @@ public class AllPatientsController {
         patientObservableList.addAll(dao.getPatientByName(""));
         allPatients.setItems(patientObservableList);
     }
+
 
 }

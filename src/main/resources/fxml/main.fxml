@@ -11,9 +11,10 @@
          minWidth="-Infinity"
          prefHeight="700.0" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml/1"
+         fx:id="mainTabPane"
          fx:controller="com.sumdu.hospital.controller.MainController">
     <tabs>
-        <Tab text="Кабінети паціентів">
+        <Tab text="Кабінети паціентів" fx:id="patientCabinet">
             <content>
                 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0"
                             minWidth="0.0">

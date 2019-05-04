@@ -5,6 +5,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public class MainController {
     private static final Logger LOGGER = Logger.getLogger(MainController.class);
     @FXML
     public Tab allPatientsTab;
+    @FXML
+    public Tab patientCabinet;
+    @FXML
+    public TabPane mainTabPane;
     private ApplicationContext context;
 
     @Autowired
