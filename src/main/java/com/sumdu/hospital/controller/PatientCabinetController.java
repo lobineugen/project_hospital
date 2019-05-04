@@ -8,19 +8,21 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
 
 import static com.sumdu.hospital.constants.Constants.getStringConverter;
 
@@ -60,15 +62,20 @@ public class PatientCabinetController {
     @FXML
     public TextField patientID;
     @FXML
-    public AnchorPane anchorPane;
+    public AnchorPane patientCabinet;
+    @FXML
+    public Button addMedicalCardToStationaryPatient;
+    @FXML
+    public HBox medicalCardsForStationaryPatientsContainer;
     private DAO dao;
     private Helper helper;
     private ShowDialog showDialog;
     private ApplicationContext context;
     private Patient currentPatient;
 
-    public PatientCabinetController(DAO dao) {
+    public PatientCabinetController(DAO dao, Helper helper) {
         this.dao = dao;
+        this.helper = helper;
     }
 
     @FXML
@@ -94,7 +101,6 @@ public class PatientCabinetController {
         save.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                helper = context.getBean(Helper.class);
                 showDialog = context.getBean(ShowDialog.class);
                 int id;
                 boolean create = false;
@@ -113,20 +119,52 @@ public class PatientCabinetController {
                 currentPatient = new Patient(id,
                         fullName.getText(),
                         passportID.getText());
-                currentPatient.setDateOfBirth(Date.valueOf(dateOfBirth.getValue()));
-                currentPatient.setAddress(address.getText());
-                currentPatient.setWorkPlace(workPlace.getText());
-                currentPatient.setPhoneNumber(phoneNumber.getText());
+                if (dateOfBirth.getValue() != null) {
+                    currentPatient.setDateOfBirth(Date.valueOf(dateOfBirth.getValue()));
+                }
+                if (!address.getText().isEmpty()) {
+                    currentPatient.setAddress(address.getText());
+                }
+                if (!workPlace.getText().isEmpty()) {
+                    currentPatient.setWorkPlace(workPlace.getText());
+                }
+                if (!phoneNumber.getText().isEmpty()) {
+                    currentPatient.setPhoneNumber(phoneNumber.getText());
+                }
                 currentPatient.setAddressType(((RadioButton) addressType.getSelectedToggle()).getText());
                 if (create) {
                     dao.createPatient(currentPatient);
                     patientID.setText(String.valueOf(currentPatient.getPatientID()));
-                    showDialog.showInformationDialog("Запис про пацієнта успішно створена", anchorPane);
+                    showDialog.showInformationDialog("Запис про пацієнта успішно створена", patientCabinet);
                 } else {
                     dao.updatePatient(currentPatient);
-                    showDialog.showInformationDialog("Запис про пацієнта " + currentPatient.getFullName() + " успішно оновлений!", anchorPane);
+                    showDialog.showInformationDialog("Запис про пацієнта " + currentPatient.getFullName() + " успішно оновлений!", patientCabinet);
                 }
                 System.out.println("id current user: " + patientID.getText());
+            }
+        });
+        addMedicalCardToStationaryPatient.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Button newCard = new Button("test\n test");
+                newCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        MainController mainController = context.getBean(MainController.class);
+                        try {
+                            mainController.content.setContent(FXMLLoader.load(getClass().getResource("/fxml/medicalCard.fxml")));
+                        } catch (IOException e) {
+                            LOGGER.error("IOException:", e);
+                        }
+                        Button button = new Button("Кабиент пациент >");
+                        button.addEventHandler(MouseEvent.MOUSE_CLICKED, helper.addBackReference(mainController, patientCabinet, button));
+                        mainController.addBreadCrumb(button);
+                    }
+                });
+                newCard.setPrefHeight(91);
+                newCard.setMinWidth(100);
+                medicalCardsForStationaryPatientsContainer.getChildren().add(newCard);
+
             }
         });
     }

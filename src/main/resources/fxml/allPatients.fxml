@@ -9,7 +9,7 @@
 <?import javafx.scene.control.Label?>
 <AnchorPane fx:id="allPatientsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="1175.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="1175.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.sumdu.hospital.controller.AllPatientsController">
     <TableView fx:id="allPatients" layoutY="99.0" prefHeight="495.0" prefWidth="1175.0" AnchorPane.bottomAnchor="0.0"
                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="95.0"

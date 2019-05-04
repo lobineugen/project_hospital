@@ -1,9 +1,14 @@
 package com.sumdu.hospital.service;
 
+import com.sumdu.hospital.controller.MainController;
 import com.sumdu.hospital.database.DAO;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +52,15 @@ public class Helper {
                 "",
                 (Pane) control.getParent());
         return false;
+    }
+
+    public EventHandler<MouseEvent> addBackReference(MainController mainController, Node node, Button button) {
+        return new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mainController.content.setContent(node);
+                mainController.deleteBreadCrumb(button);
+            }
+        };
     }
 }

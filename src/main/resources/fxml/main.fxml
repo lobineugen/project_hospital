@@ -13,33 +13,24 @@
          xmlns:fx="http://javafx.com/fxml/1"
          fx:id="mainTabPane"
          fx:controller="com.sumdu.hospital.controller.MainController">
-    <tabs>
-        <Tab text="Кабінети паціентів" fx:id="patientCabinet">
-            <content>
-                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0"
-                            minWidth="0.0">
-                    <children>
-                        <HBox fx:id="breadCrumbsContainer" alignment="CENTER_LEFT" layoutX="46.0" layoutY="63.0"
-                              prefHeight="50.0" prefWidth="890.0" AnchorPane.leftAnchor="5.0"
-                              AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0"/>
-                        <ScrollPane fx:id="content" layoutX="14.0" layoutY="55.0" prefHeight="598.0"
-                                    AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
-                                    AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
-                            <fx:include source="patientCabinet.fxml"/>
-                        </ScrollPane>
-                    </children>
-                </AnchorPane>
-            </content>
-        </Tab>
-        <Tab text="Виписка">
-            <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-
-                </AnchorPane>
-            </content>
-        </Tab>
-        <Tab text="База даних" fx:id="allPatientsTab">
-            <fx:include source="allPatients.fxml"/>
-        </Tab>
-    </tabs>
+    <Tab text="Кабінети паціентів" fx:id="patientCabinet">
+        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0"
+                    minWidth="0.0">
+            <HBox fx:id="breadCrumbsContainer" alignment="CENTER_LEFT" layoutX="46.0" layoutY="63.0"
+                  prefHeight="50.0" prefWidth="890.0" AnchorPane.leftAnchor="5.0"
+                  AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0"/>
+            <ScrollPane fx:id="content" layoutX="14.0" layoutY="55.0" prefHeight="598.0"
+                        AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
+                        AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
+                <fx:include source="patientCabinet.fxml"/>
+            </ScrollPane>
+        </AnchorPane>
+    </Tab>
+    <Tab text="Виписка">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        </AnchorPane>
+    </Tab>
+    <Tab text="База даних" fx:id="allPatientsTab">
+        <fx:include source="allPatients.fxml"/>
+    </Tab>
 </TabPane>

@@ -4,8 +4,11 @@ import com.sumdu.hospital.database.InitStructure;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.HBox;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,10 @@ public class MainController {
     public Tab patientCabinet;
     @FXML
     public TabPane mainTabPane;
+    @FXML
+    public HBox breadCrumbsContainer;
+    @FXML
+    public ScrollPane content;
     private ApplicationContext context;
 
     @Autowired
@@ -48,5 +55,15 @@ public class MainController {
     @Autowired
     public void context(ApplicationContext context) {
         this.context = context;
+    }
+
+    public void addBreadCrumb(Node node) {
+        LOGGER.debug("add: " + node);
+        breadCrumbsContainer.getChildren().add(node);
+    }
+
+    public void deleteBreadCrumb(Node node) {
+        LOGGER.debug("delete: " + node);
+        breadCrumbsContainer.getChildren().remove(node);
     }
 }
