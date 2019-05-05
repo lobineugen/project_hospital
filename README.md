@@ -1,2 +1,3 @@
 [![Java 8+](https://img.shields.io/badge/java-8%2b-green.svg)](http://www.oracleConnect.com/technetwork/java/javase/downloads/index.html)
 [![Build Status](https://semaphoreci.com/api/v1/lobineugen/project_hospital/branches/master/shields_badge.svg)](https://semaphoreci.com/lobineugen/project_hospital)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4f41c348b3ec4c52a0a505fdf90595fb)](https://www.codacy.com/app/lobineugen/project_hospital?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lobineugen/project_hospital&amp;utm_campaign=Badge_Grade)
