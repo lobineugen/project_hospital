@@ -2,6 +2,8 @@ package com.sumdu.hospital.model;
 
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Patient {
     private int patientID;
@@ -12,6 +14,7 @@ public class Patient {
     private String address;
     private String phoneNumber;
     private String workPlace;
+    private List<Card> cardsList;
 
     public Patient(int patientID, String fullName, String passportID) {
         this.patientID = patientID;
@@ -87,5 +90,21 @@ public class Patient {
 
     public void setWorkPlace(String workPlace) {
         this.workPlace = workPlace;
+    }
+
+    public void addCard(Card card) {
+        if (cardsList == null) {
+            cardsList = new ArrayList<>();
+        }
+        cardsList.add(card);
+    }
+
+    public List<Card> getCardsList() {
+        return cardsList;
+    }
+
+
+    public void removeCard(Card card) {
+        cardsList.remove(card);
     }
 }

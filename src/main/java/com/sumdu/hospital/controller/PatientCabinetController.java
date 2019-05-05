@@ -1,6 +1,7 @@
 package com.sumdu.hospital.controller;
 
 import com.sumdu.hospital.database.DAO;
+import com.sumdu.hospital.model.Card;
 import com.sumdu.hospital.model.Patient;
 import com.sumdu.hospital.service.Helper;
 import com.sumdu.hospital.service.ShowDialog;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,10 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import static com.sumdu.hospital.constants.Constants.getStringConverter;
 
@@ -73,8 +79,9 @@ public class PatientCabinetController {
     private ApplicationContext context;
     private Patient currentPatient;
 
-    public PatientCabinetController(DAO dao, Helper helper) {
+    public PatientCabinetController(DAO dao, Helper helper, ShowDialog showDialog) {
         this.dao = dao;
+        this.showDialog = showDialog;
         this.helper = helper;
     }
 
@@ -101,7 +108,6 @@ public class PatientCabinetController {
         save.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                showDialog = context.getBean(ShowDialog.class);
                 int id;
                 boolean create = false;
                 if (!helper.isNotEmpty(fullName)
@@ -146,7 +152,9 @@ public class PatientCabinetController {
         addMedicalCardToStationaryPatient.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Button newCard = new Button("test\n test");
+                Card card = getNewCard();
+                Button newCard = new Button(String.format("№ = %s\n Тиждень лікування = %s\n Дата виписки = %tF\n Дата госпіталізації = %tF",
+                        card.getCardNumber(), card.getWeek(), card.getDateOut(), card.getDateIn()));
                 newCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -206,6 +214,17 @@ public class PatientCabinetController {
                 toggle.setSelected(true);
             }
         }
+    }
+
+    private Card getNewCard() {
+        Optional<Pair<String, Card>> data = showDialog.createCard(patientCabinet);
+        System.out.println(data.get());
+        if (data.isPresent()) {
+            if (data.get().getKey().equalsIgnoreCase("newCard")) {
+                return data.get().getValue();
+            }
+        }
+        return null;
     }
 
 }
