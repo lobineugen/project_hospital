@@ -93,6 +93,7 @@ public class Patient {
     }
 
     public void addCard(Card card) {
+        System.out.println("id: " + patientID + " , card id : " + card.getCardID());
         if (cardsList == null) {
             cardsList = new ArrayList<>();
         }

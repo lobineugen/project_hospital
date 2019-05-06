@@ -1,32 +1,36 @@
 package com.sumdu.hospital.service;
 
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import com.sumdu.hospital.model.Card;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
 import java.util.Optional;
 
-import static com.sumdu.hospital.constants.Constants.INFORMATION_DIALOG;
-import static com.sumdu.hospital.constants.Constants.WARNING_DIALOG;
-import static com.sumdu.hospital.constants.Constants.getStringConverter;
+import static com.sumdu.hospital.constants.Constants.*;
 
 @Service
 public class ShowDialog {
     private Helper helper;
     private ApplicationContext context;
+    private Button createButton;
+    private JFXTextField number;
+    private JFXTextField week;
+    private JFXDatePicker dateIn;
+    private JFXDatePicker dateOut;
 
     public void showInformationDialog(String information, Pane primaryStage) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -55,34 +59,57 @@ public class ShowDialog {
         alert.showAndWait();
     }
 
-    public Optional<Pair<String, Card>> createCard(Pane primaryStage) {
-        Dialog<Pair<String, Card>> dialog = new Dialog<>();
-        dialog.setTitle("Создать новую карту");
-        dialog.setHeaderText("Заполните необходимие поля что би создать");
+    public Optional<Card> createCard(Pane primaryStage) {
+        helper = context.getBean(Helper.class);
+        Dialog<Card> dialog = new Dialog<>();
+        dialog.setTitle("Вікно створення");
+        dialog.setHeaderText("Заповніть всі поля щоб створити нову карту");
         dialog.initOwner(primaryStage.getScene().getWindow());
-        TextField number = new TextField();
-        TextField week = new TextField();
-        DatePicker dateIn = new DatePicker();
-        DatePicker dateOut = new DatePicker();
+        Image img = new Image(getClass().getResource("/img/icon_create.png").toString());
+        ImageView imageView = new ImageView(img);
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
+        dialog.setGraphic(imageView);
+        number = new JFXTextField();
+        week = new JFXTextField();
+        dateIn = new JFXDatePicker();
+        dateOut = new JFXDatePicker();
         dateIn.setConverter(getStringConverter());
         dateOut.setConverter(getStringConverter());
 
-        ButtonType createButton = new ButtonType("Створити", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(createButton, ButtonType.CANCEL);
-        dialog.setResultConverter(new Callback<ButtonType, Pair<String, Card>>() {
+
+        number.setMinWidth(240);
+        dateIn.setMinWidth(240);
+        dateOut.setMinWidth(240);
+        week.setMinWidth(240);
+
+        helper.addRequiredValidator(number);
+        helper.addRequiredValidator(dateOut);
+        helper.addRequiredValidator(dateIn);
+        helper.addRequiredValidator(week);
+
+        ButtonType createButtonType = new ButtonType("Створити", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(createButtonType, ButtonType.CANCEL);
+        createButton = (Button) dialog.getDialogPane().lookupButton(createButtonType);
+        createButton.setDisable(true);
+
+        number.textProperty().addListener(getStringListener(number));
+        week.textProperty().addListener(getStringListener(week));
+        dateIn.valueProperty().addListener(getDateListener(dateIn));
+        dateOut.valueProperty().addListener(getDateListener(dateOut));
+
+        dialog.setResultConverter(new Callback<ButtonType, Card>() {
             @Override
-            public Pair<String, Card> call(ButtonType param) {
-                if (param == createButton) {
-                    helper = context.getBean(Helper.class);
-                    Card card = new Card(helper.getUniqueID(), number.getText(), Date.valueOf(dateIn.getValue()), Date.valueOf(dateOut.getValue()), week.getText());
-                    return new Pair<>("newCard", card);
+            public Card call(ButtonType param) {
+                if (param == createButtonType) {
+                    return new Card(helper.getUniqueID(), number.getText(), Date.valueOf(dateIn.getValue()), Date.valueOf(dateOut.getValue()), week.getText());
                 }
                 return null;
             }
         });
         GridPane grid = new GridPane();
-        grid.setHgap(20);
-        grid.setVgap(20);
+        grid.setHgap(10);
+        grid.setVgap(30);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
         grid.add(new Label("№:"), 0, 0);
@@ -101,5 +128,39 @@ public class ShowDialog {
     @Autowired
     public void context(ApplicationContext context) {
         this.context = context;
+    }
+
+    private ChangeListener<String> getStringListener(JFXTextField textField) {
+        return new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!number.getText().isEmpty()
+                        && !week.getText().isEmpty()
+                        && dateIn.getValue() != null
+                        && dateOut.getValue() != null) {
+                    createButton.setDisable(false);
+                } else {
+                    createButton.setDisable(true);
+                }
+                textField.validate();
+            }
+        };
+    }
+
+    private ChangeListener<LocalDate> getDateListener(JFXDatePicker datePicker) {
+        return new ChangeListener<LocalDate>() {
+            @Override
+            public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
+                if (!number.getText().isEmpty()
+                        && !week.getText().isEmpty()
+                        && dateIn.getValue() != null
+                        && dateOut.getValue() != null) {
+                    createButton.setDisable(false);
+                } else {
+                    createButton.setDisable(true);
+                }
+                datePicker.validate();
+            }
+        };
     }
 }

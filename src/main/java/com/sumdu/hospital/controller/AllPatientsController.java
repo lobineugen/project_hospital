@@ -97,7 +97,7 @@ public class AllPatientsController {
                 }
                 Patient patient = allPatients.getSelectionModel().getSelectedItem();
                 PatientCabinetController patientCabinetController = context.getBean(PatientCabinetController.class);
-                patientCabinetController.fillFields(patient);
+                patientCabinetController.setPatient(patient);
                 MainController mainController = context.getBean(MainController.class);
                 mainController.mainTabPane.getSelectionModel().select(mainController.patientCabinet);
             }
@@ -135,7 +135,7 @@ public class AllPatientsController {
                         patientObservableList.remove(patient);
                         PatientCabinetController patientCabinetController = context.getBean(PatientCabinetController.class);
                         if (Integer.valueOf(patientCabinetController.patientID.getText()) == patient.getPatientID()) {
-                            patientCabinetController.clearFields();
+                            patientCabinetController.removePatient();
                         }
                         showDialog.showInformationDialog("Запис про пацієнта повністю вилучено!", allPatientsPane);
                     } else {

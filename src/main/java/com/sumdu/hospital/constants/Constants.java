@@ -16,6 +16,8 @@ public class Constants {
     public static final Map<String, String> FIELD_NAME_RATIO = new HashMap<>();
     public static final String INFORMATION_DIALOG = "Інформаційний діалог";
     public static final String WARNING_DIALOG = "Попереджувальний діалог";
+    public static final String REQUIRED_FIELD = "Поле обов'язкове для заповнення!";
+    public static final String EMPTY = "";
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static final SimpleDateFormat MILLISECOND_FORMAT = new SimpleDateFormat("SSS");
 

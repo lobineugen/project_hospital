@@ -1,6 +1,11 @@
 package com.sumdu.hospital.service;
 
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
 import com.sumdu.hospital.database.DAO;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -10,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
+import static com.sumdu.hospital.constants.Constants.EMPTY;
 import static com.sumdu.hospital.constants.Constants.MILLISECOND_FORMAT;
+import static com.sumdu.hospital.constants.Constants.REQUIRED_FIELD;
 
 @Service
 public class Helper {
@@ -46,5 +54,16 @@ public class Helper {
                 "",
                 (Pane) control.getParent());
         return false;
+    }
+
+    public void addRequiredValidator(Control currentControl) {
+        RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
+        requiredFieldValidator.setMessage(REQUIRED_FIELD);
+        if (currentControl instanceof JFXTextField) {
+            ((JFXTextField) currentControl).getValidators().add(requiredFieldValidator);
+        } else if (currentControl instanceof JFXDatePicker) {
+            ((JFXDatePicker) currentControl).getValidators().add(requiredFieldValidator);
+        }
+
     }
 }
