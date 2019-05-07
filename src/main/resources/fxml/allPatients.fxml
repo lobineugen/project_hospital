@@ -21,7 +21,7 @@
     <Button fx:id="exportToXSLButton" layoutX="1091.0" layoutY="55.0" mnemonicParsing="false" prefHeight="31.0"
             prefWidth="84.0" text="Експорт в XSL"
             AnchorPane.rightAnchor="0.0"/>
-    <Button layoutX="-2.0" layoutY="14.0" mnemonicParsing="false" text="+" AnchorPane.leftAnchor="10.0"/>
+    <Button fx:id="createPatient" layoutX="-2.0" layoutY="14.0" mnemonicParsing="false" text="+" AnchorPane.leftAnchor="10.0"/>
     <Button fx:id="deleteCurrent" layoutX="56.0" layoutY="14.0" mnemonicParsing="false" prefWidth="31.0" text="-"
             AnchorPane.leftAnchor="50.0"/>
 </AnchorPane>

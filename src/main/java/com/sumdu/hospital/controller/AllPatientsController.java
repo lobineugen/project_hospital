@@ -31,6 +31,8 @@ public class AllPatientsController {
     @FXML
     public Button deleteCurrent;
     @FXML
+    public Button createPatient;
+    @FXML
     private AnchorPane allPatientsPane;
     @FXML
     private TableView<Patient> allPatients;
@@ -116,7 +118,15 @@ public class AllPatientsController {
 
             }
         });
-
+        createPatient.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                MainController mainController = context.getBean(MainController.class);
+                mainController.mainTabPane.getSelectionModel().select(mainController.patientCabinet);
+                PatientCabinetController patientCabinetController = context.getBean(PatientCabinetController.class);
+                patientCabinetController.removePatient();
+            }
+        });
         deleteCurrent.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

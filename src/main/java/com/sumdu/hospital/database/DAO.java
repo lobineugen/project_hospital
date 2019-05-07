@@ -1,5 +1,6 @@
 package com.sumdu.hospital.database;
 
+import com.sumdu.hospital.model.Card;
 import com.sumdu.hospital.model.Patient;
 
 import java.sql.Connection;
@@ -20,6 +21,8 @@ public interface DAO {
     void createPatient(Patient patient);
 
     void updatePatient(Patient patient);
+
+    void createCard(Card card);
 
     int getID();
 }

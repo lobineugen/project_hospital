@@ -1,6 +1,7 @@
 package com.sumdu.hospital.database.impl;
 
 import com.sumdu.hospital.database.DAO;
+import com.sumdu.hospital.model.Card;
 import com.sumdu.hospital.model.Patient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -137,6 +138,23 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setString(6, patient.getPhoneNumber());
             ps.setString(7, patient.getWorkPlace());
             ps.setInt(8, patient.getPatientID());
+            ps.execute();
+        } catch (SQLException e) {
+            LOGGER.debug("SQLException ", e);
+        }
+        closeConnection();
+    }
+
+    @Override
+    public void createCard(Card card) {
+        getConnection();
+        try {
+            PreparedStatement ps = connection.prepareStatement("insert into sm_cards (cardID, patientID, cardNumber,dateIN,dateOUT) values (?,?,?,?,?)");
+            ps.setInt(1, card.getCardID());
+            ps.setInt(2, card.getPatientID());
+            ps.setString(3, card.getCardNumber());
+            ps.setDate(4, card.getDateIn());
+            ps.setDate(5, card.getDateOut());
             ps.execute();
         } catch (SQLException e) {
             LOGGER.debug("SQLException ", e);

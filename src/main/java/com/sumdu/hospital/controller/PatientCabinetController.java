@@ -156,8 +156,10 @@ public class PatientCabinetController {
                     Optional<Card> optional = showDialog.createCard(patientCabinet);
                     if (optional.isPresent()) {
                         Card card = optional.get();
+                        card.setPatientID(Integer.parseInt(patientID.getText()));
                         Button newCard = new Button(String.format("№ = %s\n Тиждень лікування = %s\n Дата виписки = %tF\n Дата госпіталізації = %tF",
                                 card.getCardNumber(), card.getWeek(), card.getDateOut(), card.getDateIn()));
+                        dao.createCard(card);
                         newCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
