@@ -62,9 +62,11 @@ public class AllPatientsController {
     }
 
     private void initTable(Map<String, String> definition) {
+        System.out.println(definition.size());
         List<TableColumn<Patient, ?>> collection = new ArrayList<>();
         label:
         for (Map.Entry<String, String> entry : definition.entrySet()) {
+
             TableColumn<Patient, ?> column;
             switch (entry.getValue()) {
                 case TEXT:
@@ -79,14 +81,13 @@ public class AllPatientsController {
                 default:
                     continue label;
             }
-            if (entry.getKey().equals(PATIENT_ID)) {
+            if (entry.getKey().equals(PATIENT_ID) || entry.getKey().equals(CARD_ID) || !FIELD_NAME_RATIO.containsKey(entry.getKey())) {
                 column.setVisible(false);
             }
             column.setText(FIELD_NAME_RATIO.get(entry.getKey()));
             column.setCellValueFactory(new PropertyValueFactory<>(entry.getKey()));
             collection.add(column);
         }
-        Collections.reverse(collection);
         allPatients.getColumns().addAll(collection);
         ContextMenu contextMenu = new ContextMenu();
         MenuItem edit = new MenuItem("Редагувати");

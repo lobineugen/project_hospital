@@ -15,6 +15,7 @@ public class Patient {
     private String phoneNumber;
     private String workPlace;
     private List<Card> cardsList;
+    private Card lastCard;
 
     public Patient(int patientID, String fullName, String passportID) {
         this.patientID = patientID;
@@ -27,6 +28,9 @@ public class Patient {
         this.workPlace = null;
     }
 
+    public void setCardsList(List<Card> cardsList) {
+        this.cardsList = cardsList;
+    }
 
     public int getPatientID() {
         return patientID;
@@ -92,11 +96,20 @@ public class Patient {
         this.workPlace = workPlace;
     }
 
+    public Card getLastCard() {
+        return lastCard;
+    }
+
+    public void setLastCard(Card lastCard) {
+        this.lastCard = lastCard;
+    }
+
     public void addCard(Card card) {
         if (cardsList == null) {
             cardsList = new ArrayList<>();
         }
         cardsList.add(card);
+        lastCard = card;
     }
 
     public List<Card> getCardsList() {
@@ -107,4 +120,22 @@ public class Patient {
     public void removeCard(Card card) {
         cardsList.remove(card);
     }
+
+
+    public String getWeek() {
+        return lastCard.getWeek();
+    }
+
+    public String getCardNumber() {
+        return lastCard.getCardNumber();
+    }
+
+    public Date getDateIn() {
+        return lastCard.getDateIn();
+    }
+
+    public Date getDateOut() {
+        return lastCard.getDateOut();
+    }
+
 }

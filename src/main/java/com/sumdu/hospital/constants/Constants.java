@@ -13,6 +13,7 @@ public class Constants {
     public static final String DATE = "DATE";
     public static final String INTEGER = "INTEGER";
     public static final String PATIENT_ID = "patientID";
+    public static final String CARD_ID = "cardID";
     public static final Map<String, String> FIELD_NAME_RATIO = new HashMap<>();
     public static final String INFORMATION_DIALOG = "Інформаційний діалог";
     public static final String WARNING_DIALOG = "Попереджувальний діалог";
@@ -30,6 +31,11 @@ public class Constants {
         FIELD_NAME_RATIO.put("workPlace", "Місце роботи, посада");
         FIELD_NAME_RATIO.put("patientID", "№");
         FIELD_NAME_RATIO.put("addressType", "Тип адреса");
+        FIELD_NAME_RATIO.put("cardNumber", "Номер карти");
+        FIELD_NAME_RATIO.put("week", "Тиждень лікування");
+        FIELD_NAME_RATIO.put("dateIn", "Дата госпіталізації");
+        FIELD_NAME_RATIO.put("dateOut", "Дата виписки");
+
     }
 
     public static StringConverter<LocalDate> getStringConverter() {

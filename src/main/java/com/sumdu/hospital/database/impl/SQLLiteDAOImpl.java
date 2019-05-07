@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.util.*;
 
 @Repository
 public class SQLLiteDAOImpl implements DAO {
@@ -21,6 +19,23 @@ public class SQLLiteDAOImpl implements DAO {
     @Value("${spring.datasource.name}")
     private String dataBaseName;
     private Connection connection;
+    private static final String GET_PATIENT_QUERY = "select p.patientID,\n" +
+            "       fullName,\n" +
+            "       passportID,\n" +
+            "       dateOfBirth,\n" +
+            "       addressType,\n" +
+            "       address,\n" +
+            "       phoneNumber,\n" +
+            "       workPlace,\n" +
+            "       cardID,\n" +
+            "       cardNumber,\n" +
+            "       dateIN,\n" +
+            "       dateOUT,\n" +
+            "       week\n" +
+            "from sm_patients p\n" +
+            "left outer join (select * from sm_cards group by patientID having max(cardID)) c\n" +
+            "on p.patientID = c.patientID\n" +
+            "where lower(fullName) LIKE lower(?)";
 
     @Override
     public Connection getConnection() {
@@ -49,11 +64,12 @@ public class SQLLiteDAOImpl implements DAO {
         getConnection();
         List<Patient> result = new LinkedList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT patientID,fullName,passportID,dateOfBirth,addressType, address , phoneNumber,workPlace  FROM sm_patients WHERE lower(fullName) LIKE lower(?)");
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_PATIENT_QUERY);
             preparedStatement.setString(1, "%" + name + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Patient patient = new Patient(resultSet.getInt("patientID"),
+                int patientID = resultSet.getInt("patientID");
+                Patient patient = new Patient(patientID,
                         resultSet.getString("fullName"),
                         resultSet.getString("passportID"));
                 patient.setDateOfBirth(resultSet.getDate("dateOfBirth"));
@@ -61,8 +77,32 @@ public class SQLLiteDAOImpl implements DAO {
                 patient.setAddressType(resultSet.getString("addressType"));
                 patient.setPhoneNumber(resultSet.getString("phoneNumber"));
                 patient.setWorkPlace(resultSet.getString("workPlace"));
+                Card card = new Card(resultSet.getInt("cardID"),
+                        resultSet.getString("cardNumber"),
+                        resultSet.getDate("dateIn"),
+                        resultSet.getDate("dateOut"),
+                        resultSet.getString("week"));
+
+                card.setPatientID(patientID);
+                patient.setLastCard(card);
+
+                List<Card> cardList = new ArrayList<>();
+                PreparedStatement additionalStatement = connection.prepareStatement("select * from sm_cards where patientID = ?");
+                additionalStatement.setInt(1, patientID);
+                ResultSet additionalResult = additionalStatement.executeQuery();
+                while (additionalResult.next()) {
+                    Card newCard = new Card(additionalResult.getInt("cardID"),
+                            additionalResult.getString("cardNumber"),
+                            additionalResult.getDate("dateIn"),
+                            additionalResult.getDate("dateOut"),
+                            additionalResult.getString("week"));
+                    cardList.add(newCard);
+                }
+                patient.setCardsList(cardList);
                 result.add(patient);
             }
+
+
         } catch (SQLException e) {
             LOGGER.debug("SQLException ", e);
         }
@@ -72,19 +112,20 @@ public class SQLLiteDAOImpl implements DAO {
 
     @Override
     public Map<String, String> getTableDefinition() {
-        Map<String, String> result = new HashMap<>();
+        Map<String, String> result = new LinkedHashMap<>();
         getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM sm_patients LIMIT 1");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT p.patientID, fullName, passportID, dateOfBirth, addressType,address,phoneNumber, workPlace, cardID,cardNumber, week,dateIN, dateOUT, mainDiagnosis, complication, pvt,concomitant FROM sm_patients p, sm_cards LIMIT 1");
             ResultSet resultSet = preparedStatement.executeQuery();
             for (int i = 1; i < resultSet.getMetaData().getColumnCount(); i++) {
-                result.put(resultSet.getMetaData().getColumnName(i),
-                        resultSet.getMetaData().getColumnTypeName(i));
+                String name = resultSet.getMetaData().getColumnName(i);
+                String type = resultSet.getMetaData().getColumnTypeName(i);
+                result.put(name,
+                        type);
             }
         } catch (SQLException e) {
             LOGGER.debug("SQLException ", e);
         }
-
         closeConnection();
         return result;
     }
@@ -149,12 +190,13 @@ public class SQLLiteDAOImpl implements DAO {
     public void createCard(Card card) {
         getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("insert into sm_cards (cardID, patientID, cardNumber,dateIN,dateOUT) values (?,?,?,?,?)");
+            PreparedStatement ps = connection.prepareStatement("insert into sm_cards (cardID, patientID, cardNumber,dateIN,dateOUT, week) values (?,?,?,?,?, ?)");
             ps.setInt(1, card.getCardID());
             ps.setInt(2, card.getPatientID());
             ps.setString(3, card.getCardNumber());
             ps.setDate(4, card.getDateIn());
             ps.setDate(5, card.getDateOut());
+            ps.setString(6, card.getWeek());
             ps.execute();
         } catch (SQLException e) {
             LOGGER.debug("SQLException ", e);

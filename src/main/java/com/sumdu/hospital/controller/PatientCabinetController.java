@@ -157,25 +157,8 @@ public class PatientCabinetController {
                     if (optional.isPresent()) {
                         Card card = optional.get();
                         card.setPatientID(Integer.parseInt(patientID.getText()));
-                        Button newCard = new Button(String.format("№ = %s\n Тиждень лікування = %s\n Дата виписки = %tF\n Дата госпіталізації = %tF",
-                                card.getCardNumber(), card.getWeek(), card.getDateOut(), card.getDateIn()));
                         dao.createCard(card);
-                        newCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                MainController mainController = context.getBean(MainController.class);
-                                try {
-                                    mainController.content.setContent(FXMLLoader.load(getClass().getResource("/fxml/medicalCard.fxml")));
-                                } catch (IOException e) {
-                                    LOGGER.error("IOException:", e);
-                                }
-                                Button button = new Button("Кабиент пациент >");
-                                mainController.addBreadCrumb(button, patientCabinet, 1);
-                            }
-                        });
-                        newCard.setPrefHeight(91);
-                        newCard.setMinWidth(100);
-                        medicalCardsForStationaryPatientsContainer.getChildren().add(newCard);
+                        medicalCardsForStationaryPatientsContainer.getChildren().add(getCardButton(card));
                         currentPatient.addCard(card);
                     }
                 }
@@ -207,6 +190,7 @@ public class PatientCabinetController {
         workPlace.setText("");
         age.setText("");
         address.setText("");
+        medicalCardsForStationaryPatientsContainer.getChildren().clear();
     }
 
     public void setPatient(Patient patient) {
@@ -223,6 +207,33 @@ public class PatientCabinetController {
                 toggle.setSelected(true);
             }
         }
+        for (Card card : patient.getCardsList()) {
+            medicalCardsForStationaryPatientsContainer.getChildren().add(getCardButton(card));
+        }
+
+    }
+
+    private Button getCardButton(Card card) {
+        Button newCard = new Button(String.format("№ = %s\n Тиждень лікування = %s\n Дата виписки = %tF\n Дата госпіталізації = %tF",
+                card.getCardNumber(), card.getWeek(), card.getDateOut(), card.getDateIn()));
+        newCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                MainController mainController = context.getBean(MainController.class);
+                try {
+                    mainController.content.setContent(FXMLLoader.load(getClass().getResource("/fxml/medicalCard.fxml")));
+                } catch (IOException e) {
+                    LOGGER.error("IOException:", e);
+                }
+                MedicalCardController medicalCardController = context.getBean(MedicalCardController.class);
+                medicalCardController.setCard(card);
+                Button button = new Button("Кабиент пациент >");
+                mainController.addBreadCrumb(button, patientCabinet, 1);
+            }
+        });
+        newCard.setPrefHeight(91);
+        newCard.setMinWidth(100);
+        return newCard;
     }
 
 }
