@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sumdu.hospital.controller.MedicalCardController">
+   <children>
+      <GridPane alignment="CENTER" hgap="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="765.0" prefWidth="1185.0" vgap="40.0" StackPane.alignment="CENTER">
+          <columnConstraints>
+              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          </columnConstraints>
+          <rowConstraints>
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+          <padding>
+              <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+          </padding>
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Клінічний аналіз крові" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Біохімічний аналіз крові" GridPane.rowIndex="1" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Аналіз крові на коагулограму" GridPane.rowIndex="2" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Спецмфічна діагностика" GridPane.rowIndex="3" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Імунолгічні дослідження" GridPane.rowIndex="4" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Гормональна панель" GridPane.rowIndex="5" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Аналіз сечі клінічний" GridPane.columnIndex="1" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Аналіз сечі на глюкозу" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Аналіз сечі на діастазу" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Аналіз калу на я/г + опісторхоз" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Копрограма" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Інші дослідження" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      </GridPane>
+   </children>
+</StackPane>

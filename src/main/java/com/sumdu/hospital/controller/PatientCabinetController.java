@@ -1,5 +1,8 @@
 package com.sumdu.hospital.controller;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import com.sumdu.hospital.database.DAO;
 import com.sumdu.hospital.model.Card;
 import com.sumdu.hospital.model.Patient;
@@ -36,41 +39,41 @@ import static com.sumdu.hospital.constants.Constants.getStringConverter;
 public class PatientCabinetController {
     private static final Logger LOGGER = Logger.getLogger(PatientCabinetController.class);
     @FXML
-    public TextField passportID;
+    public JFXTextField passportID;
     @FXML
-    public DatePicker dateOfBirth;
+    public JFXDatePicker dateOfBirth;
     @FXML
     public Label age;
     @FXML
-    public Button save;
+    public JFXButton save;
     @FXML
-    public DatePicker pvtStart;
+    public JFXDatePicker pvtStart;
     @FXML
-    public DatePicker repeatPvtStart;
+    public JFXDatePicker repeatPvtStart;
     @FXML
-    public DatePicker pvtEnd;
+    public JFXDatePicker pvtEnd;
     @FXML
-    public DatePicker repeatPvtEnd;
+    public JFXDatePicker repeatPvtEnd;
     @FXML
-    public TextField fullName;
+    public JFXTextField fullName;
     @FXML
     public RadioButton cityRadio;
     @FXML
     public RadioButton villageRadio;
     @FXML
-    public TextField address;
+    public JFXTextField address;
     @FXML
-    public TextField phoneNumber;
+    public JFXTextField phoneNumber;
     @FXML
     public ToggleGroup addressType;
     @FXML
-    public TextField workPlace;
+    public JFXTextField workPlace;
     @FXML
     public TextField patientID;
     @FXML
     public AnchorPane patientCabinet;
     @FXML
-    public Button addMedicalCardToStationaryPatient;
+    public JFXButton addMedicalCardToStationaryPatient;
     @FXML
     public HBox medicalCardsForStationaryPatientsContainer;
     private DAO dao;

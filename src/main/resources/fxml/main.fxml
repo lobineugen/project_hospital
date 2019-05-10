@@ -6,31 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity"
-         minHeight="-Infinity"
-         minWidth="-Infinity"
-         prefHeight="700.0" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx"
-         xmlns:fx="http://javafx.com/fxml/1"
-         fx:id="mainTabPane"
-         fx:controller="com.sumdu.hospital.controller.MainController">
-    <Tab text="Кабінети паціентів" fx:id="patientCabinet">
-        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0"
-                    minWidth="0.0">
-            <HBox fx:id="breadCrumbsContainer" alignment="CENTER_LEFT" layoutX="46.0" layoutY="63.0"
-                  prefHeight="50.0" prefWidth="890.0" AnchorPane.leftAnchor="5.0"
-                  AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0"/>
-            <ScrollPane fx:id="content" layoutX="14.0" layoutY="55.0" prefHeight="598.0"
-                        AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
-                        AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
-                <fx:include source="patientCabinet.fxml"/>
-            </ScrollPane>
-        </AnchorPane>
-    </Tab>
-    <Tab text="Виписка">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-        </AnchorPane>
-    </Tab>
-    <Tab text="База даних" fx:id="allPatientsTab">
-        <fx:include source="allPatients.fxml"/>
-    </Tab>
+<TabPane fx:id="mainTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sumdu.hospital.controller.MainController">
+<Tab fx:id="patientCabinet" text="Кабінети паціентів">
+    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+        <HBox fx:id="breadCrumbsContainer" alignment="CENTER_LEFT" layoutX="46.0" layoutY="63.0" prefHeight="50.0" prefWidth="890.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+        <ScrollPane fx:id="content" fitToHeight="true" fitToWidth="true" layoutX="14.0" layoutY="55.0" prefHeight="598.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
+            <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="patientCabinet.fxml" />
+        </ScrollPane>
+    </AnchorPane>
+</Tab>
+<Tab text="Виписка">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+    </AnchorPane>
+</Tab>
+<Tab fx:id="allPatientsTab" text="База даних">
+    <fx:include source="allPatients.fxml" />
+</Tab>
 </TabPane>

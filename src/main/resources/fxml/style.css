@@ -39,7 +39,10 @@
     -fx-text-fill: #2c2c2c;
 }
 
-
-.combo-box>.list-cell {
+.combo-box > .list-cell {
     -fx-alignment: center;
+}
+
+.jfx-button, .jfx-combo-box {
+    -fx-background-color: rgb(231, 231, 231);
 }
