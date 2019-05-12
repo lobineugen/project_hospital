@@ -24,5 +24,7 @@ public interface DAO {
 
     void createCard(Card card);
 
+    void updateCard(Card card);
+
     int getID();
 }

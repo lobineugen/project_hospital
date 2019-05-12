@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.sumdu.hospital.model.Card;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -162,5 +164,24 @@ public class ShowDialog {
                 datePicker.validate();
             }
         };
+    }
+
+    public Optional createExpertConsultation(Pane primaryStage) throws IOException {
+        Dialog<Card> dialog = new Dialog<>();
+        dialog.setTitle("Вікно створення");
+        dialog.setHeaderText("Заповніть всі поля щоб створити новий запис");
+        dialog.initOwner(primaryStage.getScene().getWindow());
+        Image img = new Image(getClass().getResource("/img/icon_create.png").toString());
+        ImageView imageView = new ImageView(img);
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
+        dialog.setGraphic(imageView);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+                "/fxml/expertConsultationsListCell.fxml"));
+        Pane pane = fxmlLoader.load();
+
+        dialog.getDialogPane().setContent(pane);
+        return dialog.showAndWait();
     }
 }

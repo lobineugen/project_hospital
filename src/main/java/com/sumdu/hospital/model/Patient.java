@@ -138,4 +138,9 @@ public class Patient {
         return lastCard.getDateOut();
     }
 
+    public String getMainDiagnosis(){return lastCard.getMainDiagnosis();}
+    public String getComplication(){return lastCard.getComplication();}
+    public String getPvt(){return lastCard.getPvt();}
+    public String getConcomitant(){return lastCard.getConcomitant();}
+
 }

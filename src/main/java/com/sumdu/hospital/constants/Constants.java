@@ -35,6 +35,10 @@ public class Constants {
         FIELD_NAME_RATIO.put("week", "Тиждень лікування");
         FIELD_NAME_RATIO.put("dateIn", "Дата госпіталізації");
         FIELD_NAME_RATIO.put("dateOut", "Дата виписки");
+        FIELD_NAME_RATIO.put("mainDiagnosis", "Діагноз основний");
+        FIELD_NAME_RATIO.put("complication", "Ускладнення основного діагнозу");
+        FIELD_NAME_RATIO.put("pvt", "Ускладнення ПВТ");
+        FIELD_NAME_RATIO.put("concomitant", "Діагноз супутній");
 
     }
 

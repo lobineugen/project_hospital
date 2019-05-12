@@ -19,7 +19,7 @@ public class SQLLiteDAOImpl implements DAO {
     @Value("${spring.datasource.name}")
     private String dataBaseName;
     private Connection connection;
-    private static final String GET_PATIENT_QUERY = "select p.patientID,\n" +
+    private static final String GET_PATIENT_QUERY = "SELECT p.patientID,\n" +
             "       fullName,\n" +
             "       passportID,\n" +
             "       dateOfBirth,\n" +
@@ -31,11 +31,15 @@ public class SQLLiteDAOImpl implements DAO {
             "       cardNumber,\n" +
             "       dateIN,\n" +
             "       dateOUT,\n" +
-            "       week\n" +
-            "from sm_patients p\n" +
-            "left outer join (select * from sm_cards group by patientID having max(cardID)) c\n" +
-            "on p.patientID = c.patientID\n" +
-            "where lower(fullName) LIKE lower(?)";
+            "       week," +
+            "       mainDiagnosis," +
+            "       complication," +
+            "       pvt," +
+            "       concomitant " +
+            "FROM sm_patients p\n" +
+            "LEFT OUTER JOIN (SELECT * FROM sm_cards GROUP BY patientID HAVING max(cardID)) c\n" +
+            "ON p.patientID = c.patientID\n" +
+            "WHERE lower(fullName) LIKE lower(?)";
 
     @Override
     public Connection getConnection() {
@@ -83,12 +87,18 @@ public class SQLLiteDAOImpl implements DAO {
                         resultSet.getDate("dateOut"),
                         resultSet.getString("week"));
 
+                card.setMainDiagnosis(resultSet.getString("mainDiagnosis"));
+                card.setComplication(resultSet.getString("complication"));
+                card.setPvt(resultSet.getString("pvt"));
+                card.setConcomitant(resultSet.getString("concomitant"));
+
                 card.setPatientID(patientID);
                 patient.setLastCard(card);
 
                 List<Card> cardList = new ArrayList<>();
-                PreparedStatement additionalStatement = connection.prepareStatement("select * from sm_cards where patientID = ?");
+                PreparedStatement additionalStatement = connection.prepareStatement("SELECT * FROM sm_cards WHERE patientID = ? AND cardID != ?");
                 additionalStatement.setInt(1, patientID);
+                additionalStatement.setInt(2, card.getCardID());
                 ResultSet additionalResult = additionalStatement.executeQuery();
                 while (additionalResult.next()) {
                     Card newCard = new Card(additionalResult.getInt("cardID"),
@@ -96,15 +106,20 @@ public class SQLLiteDAOImpl implements DAO {
                             additionalResult.getDate("dateIn"),
                             additionalResult.getDate("dateOut"),
                             additionalResult.getString("week"));
+                    newCard.setMainDiagnosis(additionalResult.getString("mainDiagnosis"));
+                    newCard.setComplication(additionalResult.getString("complication"));
+                    newCard.setPvt(additionalResult.getString("pvt"));
+                    newCard.setConcomitant(additionalResult.getString("concomitant"));
                     cardList.add(newCard);
                 }
+                cardList.add(card);
                 patient.setCardsList(cardList);
                 result.add(patient);
             }
 
 
         } catch (SQLException e) {
-            LOGGER.debug("SQLException ", e);
+            LOGGER.error("SQLException ", e);
         }
         closeConnection();
         return result;
@@ -117,14 +132,14 @@ public class SQLLiteDAOImpl implements DAO {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT p.patientID, fullName, passportID, dateOfBirth, addressType,address,phoneNumber, workPlace, cardID,cardNumber, week,dateIN, dateOUT, mainDiagnosis, complication, pvt,concomitant FROM sm_patients p, sm_cards LIMIT 1");
             ResultSet resultSet = preparedStatement.executeQuery();
-            for (int i = 1; i < resultSet.getMetaData().getColumnCount(); i++) {
+            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                 String name = resultSet.getMetaData().getColumnName(i);
                 String type = resultSet.getMetaData().getColumnTypeName(i);
                 result.put(name,
                         type);
             }
         } catch (SQLException e) {
-            LOGGER.debug("SQLException ", e);
+            LOGGER.error("SQLException ", e);
         }
         closeConnection();
         return result;
@@ -138,7 +153,7 @@ public class SQLLiteDAOImpl implements DAO {
             preparedStatement.setInt(1, patientID);
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.debug("SQLException ", e);
+            LOGGER.error("SQLException ", e);
         }
         closeConnection();
     }
@@ -158,14 +173,13 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setString(8, patient.getWorkPlace());
             ps.execute();
         } catch (SQLException e) {
-            LOGGER.debug("SQLException ", e);
+            LOGGER.error("SQLException ", e);
         }
         closeConnection();
     }
 
     @Override
     public void updatePatient(Patient patient) {
-        LOGGER.debug("update patient");
         getConnection();
         try {
             PreparedStatement ps = connection.prepareStatement("UPDATE sm_patients\n" +
@@ -181,7 +195,7 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setInt(8, patient.getPatientID());
             ps.execute();
         } catch (SQLException e) {
-            LOGGER.debug("SQLException ", e);
+            LOGGER.error("SQLException ", e);
         }
         closeConnection();
     }
@@ -190,7 +204,7 @@ public class SQLLiteDAOImpl implements DAO {
     public void createCard(Card card) {
         getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("insert into sm_cards (cardID, patientID, cardNumber,dateIN,dateOUT, week) values (?,?,?,?,?, ?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO sm_cards (cardID, patientID, cardNumber,dateIN,dateOUT, week) VALUES (?,?,?,?,?, ?)");
             ps.setInt(1, card.getCardID());
             ps.setInt(2, card.getPatientID());
             ps.setString(3, card.getCardNumber());
@@ -199,7 +213,24 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setString(6, card.getWeek());
             ps.execute();
         } catch (SQLException e) {
-            LOGGER.debug("SQLException ", e);
+            LOGGER.error("SQLException ", e);
+        }
+        closeConnection();
+    }
+
+    @Override
+    public void updateCard(Card card) {
+        getConnection();
+        try {
+            PreparedStatement ps = connection.prepareStatement("UPDATE sm_cards SET mainDiagnosis = ? , complication = ? , pvt = ?, concomitant = ? WHERE cardID = ?");
+            ps.setString(1, card.getMainDiagnosis());
+            ps.setString(2, card.getComplication());
+            ps.setString(3, card.getPvt());
+            ps.setString(4, card.getConcomitant());
+            ps.setInt(5, card.getCardID());
+            ps.execute();
+        } catch (SQLException e) {
+            LOGGER.error("SQLException ", e);
         }
         closeConnection();
     }
@@ -222,7 +253,7 @@ public class SQLLiteDAOImpl implements DAO {
             }
             ps.execute();
         } catch (SQLException e) {
-            LOGGER.debug("SQLException ", e);
+            LOGGER.error("SQLException ", e);
         }
         closeConnection();
         return result;

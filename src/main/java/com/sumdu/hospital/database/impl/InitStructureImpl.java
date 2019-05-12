@@ -63,7 +63,6 @@ public class InitStructureImpl implements InitStructure {
             if (resultSet.next()) {
                 count = resultSet.getInt("count");
             }
-            LOGGER.debug("Table count: " + count);
             dao.closeConnection();
         } catch (SQLException e) {
             LOGGER.error("SQLException", e);

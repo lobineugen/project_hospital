@@ -6,30 +6,27 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <JFXButton fx:id="save" contentDisplay="RIGHT" ripplerFill="BLACK" text="Зберегти">
-         <graphic>
-            <MaterialDesignIconView glyphName="CHECK_CIRCLE_OUTLINE" size="20" />
-         </graphic>
-      </JFXButton>
-      <JFXListView VBox.vgrow="SOMETIMES" />
-      <HBox>
-         <children>
-            <JFXButton fx:id="addExpertConsultation" text="Додати">
-               <graphic>
-                  <MaterialDesignIconView fill="#168300" glyphName="CHECK_CIRCLE_OUTLINE" />
-               </graphic>
-               <graphic>
-                  <MaterialDesignIconView fill="#009a15" glyphName="PLUS_CIRCLE_OUTLINE" size="20" />
-               </graphic>
-            </JFXButton>
-            <JFXButton fx:id="deleteExpertConsultion" text="Видалити">
-               <graphic>
-                  <MaterialDesignIconView fill="#a80000" glyphName="DELETE" size="20" />
-               </graphic>
-            </JFXButton>
-         </children>
-      </HBox>
-   </children>
+<VBox fx:id="vBox" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
+    <JFXButton fx:id="save" contentDisplay="RIGHT" ripplerFill="BLACK" text="Зберегти">
+        <graphic>
+            <MaterialDesignIconView glyphName="CHECK_CIRCLE_OUTLINE" size="20"/>
+        </graphic>
+    </JFXButton>
+    <JFXListView VBox.vgrow="SOMETIMES"/>
+    <HBox>
+        <JFXButton fx:id="addExpertConsultation" text="Додати">
+                <graphic>
+                    <MaterialDesignIconView fill="#168300" glyphName="CHECK_CIRCLE_OUTLINE"/>
+                </graphic>
+            <graphic>
+                <MaterialDesignIconView fill="#009a15" glyphName="PLUS_CIRCLE_OUTLINE" size="20"/>
+            </graphic>
+        </JFXButton>
+        <JFXButton fx:id="deleteExpertConsultation" text="Видалити">
+            <graphic>
+                <MaterialDesignIconView fill="#a80000" glyphName="DELETE" size="20"/>
+            </graphic>
+        </JFXButton>
+    </HBox>
 </VBox>

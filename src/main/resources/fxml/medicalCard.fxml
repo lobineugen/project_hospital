@@ -8,31 +8,41 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sumdu.hospital.controller.MedicalCardController">
-   <children>
-      <GridPane alignment="CENTER" hgap="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1170.0" vgap="60.0" StackPane.alignment="CENTER">
-          <columnConstraints>
-              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          </columnConstraints>
-          <rowConstraints>
-              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          </rowConstraints>
-          <padding>
-              <Insets bottom="60.0" left="60.0" right="60.0" top="60.0" />
-          </padding>
-         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Епідеміологічний анамнез" />
-         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Лабораторна діагностика" GridPane.rowIndex="2" />
-         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Інструментальні методи дослідження" GridPane.rowIndex="3" />
-         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Консультації спеціалістів" GridPane.columnIndex="1" />
-         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Діагноз" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Лікування" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Розрахункові індекси" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text=" " GridPane.rowIndex="1" />
-         <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Клінічні дані" styleClass="jfx-button" GridPane.rowIndex="1" />
-      </GridPane>
-   </children>
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+>
+    <GridPane alignment="CENTER" hgap="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="570.0" prefWidth="1170.0" vgap="60.0" StackPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <padding>
+            <Insets bottom="60.0" left="60.0" right="60.0" top="60.0"/>
+        </padding>
+        <JFXButton fx:id="" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   text="Епідеміологічний анамнез"/>
+        <JFXButton fx:id="labDiagnostics" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   text="Лабораторна діагностика" GridPane.rowIndex="2"/>
+        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   text="Інструментальні методи дослідження" GridPane.rowIndex="3"/>
+        <JFXButton fx:id="expertConsultations" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   text="Консультації спеціалістів" GridPane.columnIndex="1"/>
+        <JFXButton fx:id="diagnosis" buttonType="RAISED" maxHeight="1.7976931348623157E308"
+                   maxWidth="1.7976931348623157E308"
+                   text="Діагноз" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <JFXButton fx:id="treatment" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   text="Лікування" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   text="Розрахункові індекси" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text=" "
+                   GridPane.rowIndex="1"/>
+        <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Клінічні дані"
+                  styleClass="jfx-button" GridPane.rowIndex="1"/>
+    </GridPane>
 </StackPane>
