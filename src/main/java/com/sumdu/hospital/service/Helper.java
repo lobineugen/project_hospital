@@ -1,6 +1,7 @@
 package com.sumdu.hospital.service;
 
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.sumdu.hospital.database.DAO;
@@ -63,6 +64,8 @@ public class Helper {
             ((JFXTextField) currentControl).getValidators().add(requiredFieldValidator);
         } else if (currentControl instanceof JFXDatePicker) {
             ((JFXDatePicker) currentControl).getValidators().add(requiredFieldValidator);
+        } else if (currentControl instanceof JFXTextArea) {
+            ((JFXTextArea) currentControl).getValidators().add(requiredFieldValidator);
         }
 
     }

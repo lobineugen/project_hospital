@@ -5,7 +5,9 @@ import javafx.util.StringConverter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Constants {
@@ -21,8 +23,12 @@ public class Constants {
     public static final String EMPTY = "";
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static final SimpleDateFormat MILLISECOND_FORMAT = new SimpleDateFormat("SSS");
+    public static final List<String> EXPERT_LIST = new ArrayList<>();
 
     static {
+        EXPERT_LIST.add("Кардіолог");
+        EXPERT_LIST.add("Невропатоло");
+        EXPERT_LIST.add("Гастроентеролог");
         FIELD_NAME_RATIO.put("fullName", "ПІБ");
         FIELD_NAME_RATIO.put("passportID", "Номер документа");
         FIELD_NAME_RATIO.put("dateOfBirth", "Дата народження");
@@ -39,6 +45,9 @@ public class Constants {
         FIELD_NAME_RATIO.put("complication", "Ускладнення основного діагнозу");
         FIELD_NAME_RATIO.put("pvt", "Ускладнення ПВТ");
         FIELD_NAME_RATIO.put("concomitant", "Діагноз супутній");
+        FIELD_NAME_RATIO.put("date", "Дата");
+        FIELD_NAME_RATIO.put("doctor", "Спеціаліст");
+        FIELD_NAME_RATIO.put("conclusion", "Заключення");
 
     }
 

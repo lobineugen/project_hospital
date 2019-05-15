@@ -1,7 +1,6 @@
 package com.sumdu.hospital.controller;
 
 import com.sumdu.hospital.database.DAO;
-import com.sumdu.hospital.model.Card;
 import com.sumdu.hospital.model.Patient;
 import com.sumdu.hospital.service.Export;
 import com.sumdu.hospital.service.ShowDialog;
@@ -19,7 +18,6 @@ import javafx.stage.FileChooser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
@@ -139,7 +137,7 @@ public class AllPatientsController {
                         "Введіть повне ім'я паціента для підтвердження", allPatientsPane);
                 if (result.isPresent()) {
                     if (result.get().equals(patient.getFullName())) {
-                        dao.deleteByID(patient.getPatientID());
+                        dao.deleteByID(patient.getPatientID(), patient);
                         patientObservableList.remove(patient);
                         PatientCabinetController patientCabinetController = context.getBean(PatientCabinetController.class);
                         if (Integer.valueOf(patientCabinetController.patientID.getText()) == patient.getPatientID()) {

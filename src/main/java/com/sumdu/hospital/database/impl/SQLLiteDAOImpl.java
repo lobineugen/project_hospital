@@ -2,18 +2,26 @@ package com.sumdu.hospital.database.impl;
 
 import com.sumdu.hospital.database.DAO;
 import com.sumdu.hospital.model.Card;
+import com.sumdu.hospital.model.ExpertConsultation;
 import com.sumdu.hospital.model.Patient;
+import com.sumdu.hospital.service.Helper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
+import org.sqlite.SQLiteConfig;
 
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
+import static com.sumdu.hospital.constants.Constants.EXPERT_LIST;
+
 @Repository
 public class SQLLiteDAOImpl implements DAO {
     private static final Logger LOGGER = Logger.getLogger(SQLLiteDAOImpl.class);
+    private ApplicationContext context;
     @Value("${spring.datasource.url}")
     private String url;
     @Value("${spring.datasource.name}")
@@ -43,8 +51,10 @@ public class SQLLiteDAOImpl implements DAO {
 
     @Override
     public Connection getConnection() {
+        SQLiteConfig config = new SQLiteConfig();
+        config.enforceForeignKeys(false);
         try {
-            connection = DriverManager.getConnection(url + dataBaseName);
+            connection = DriverManager.getConnection(url + dataBaseName, config.toProperties());
             if (!connection.isClosed()) {
                 return connection;
             }
@@ -71,6 +81,7 @@ public class SQLLiteDAOImpl implements DAO {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_PATIENT_QUERY);
             preparedStatement.setString(1, "%" + name + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("here");
             while (resultSet.next()) {
                 int patientID = resultSet.getInt("patientID");
                 Patient patient = new Patient(patientID,
@@ -81,24 +92,9 @@ public class SQLLiteDAOImpl implements DAO {
                 patient.setAddressType(resultSet.getString("addressType"));
                 patient.setPhoneNumber(resultSet.getString("phoneNumber"));
                 patient.setWorkPlace(resultSet.getString("workPlace"));
-                Card card = new Card(resultSet.getInt("cardID"),
-                        resultSet.getString("cardNumber"),
-                        resultSet.getDate("dateIn"),
-                        resultSet.getDate("dateOut"),
-                        resultSet.getString("week"));
 
-                card.setMainDiagnosis(resultSet.getString("mainDiagnosis"));
-                card.setComplication(resultSet.getString("complication"));
-                card.setPvt(resultSet.getString("pvt"));
-                card.setConcomitant(resultSet.getString("concomitant"));
-
-                card.setPatientID(patientID);
-                patient.setLastCard(card);
-
-                List<Card> cardList = new ArrayList<>();
-                PreparedStatement additionalStatement = connection.prepareStatement("SELECT * FROM sm_cards WHERE patientID = ? AND cardID != ?");
+                PreparedStatement additionalStatement = connection.prepareStatement("SELECT * FROM sm_cards WHERE patientID = ? ORDER BY cardID");
                 additionalStatement.setInt(1, patientID);
-                additionalStatement.setInt(2, card.getCardID());
                 ResultSet additionalResult = additionalStatement.executeQuery();
                 while (additionalResult.next()) {
                     Card newCard = new Card(additionalResult.getInt("cardID"),
@@ -110,10 +106,19 @@ public class SQLLiteDAOImpl implements DAO {
                     newCard.setComplication(additionalResult.getString("complication"));
                     newCard.setPvt(additionalResult.getString("pvt"));
                     newCard.setConcomitant(additionalResult.getString("concomitant"));
-                    cardList.add(newCard);
+                    PreparedStatement expertConsultationStatement = connection.prepareStatement("SELECT * FROM sm_expert_consultations WHERE cardID = ?");
+                    expertConsultationStatement.setInt(1, newCard.getCardID());
+                    ResultSet expertResultSet = expertConsultationStatement.executeQuery();
+                    while (expertResultSet.next()) {
+                        ExpertConsultation expertConsultation = new ExpertConsultation(expertResultSet.getInt("cons_id"),
+                                expertResultSet.getDate("date"),
+                                expertResultSet.getString("doctor"),
+                                expertResultSet.getString("conclusion"));
+                        expertConsultation.setCardID(newCard.getCardID());
+                        newCard.addExpertConsultation(expertConsultation);
+                    }
+                    patient.addCard(newCard);
                 }
-                cardList.add(card);
-                patient.setCardsList(cardList);
                 result.add(patient);
             }
 
@@ -146,17 +151,23 @@ public class SQLLiteDAOImpl implements DAO {
     }
 
     @Override
-    public void deleteByID(int patientID) {
+    public void deleteByID(int id, Object object) {
         getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM sm_patients WHERE patientID = ?");
-            preparedStatement.setInt(1, patientID);
+            PreparedStatement preparedStatement = null;
+            if (object instanceof Patient) {
+                preparedStatement = connection.prepareStatement("DELETE FROM sm_patients WHERE patientID = ?");
+            } else if (object instanceof ExpertConsultation) {
+                preparedStatement = connection.prepareStatement("DELETE FROM sm_expert_consultations WHERE cons_id = ?");
+            }
+            Objects.requireNonNull(preparedStatement).setInt(1, id);
             preparedStatement.execute();
         } catch (SQLException e) {
             LOGGER.error("SQLException ", e);
         }
         closeConnection();
     }
+
 
     @Override
     public void createPatient(Patient patient) {
@@ -203,6 +214,7 @@ public class SQLLiteDAOImpl implements DAO {
     @Override
     public void createCard(Card card) {
         getConnection();
+        Helper helper = context.getBean(Helper.class);
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO sm_cards (cardID, patientID, cardNumber,dateIN,dateOUT, week) VALUES (?,?,?,?,?, ?)");
             ps.setInt(1, card.getCardID());
@@ -212,6 +224,16 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setDate(5, card.getDateOut());
             ps.setString(6, card.getWeek());
             ps.execute();
+            ps = connection.prepareStatement("INSERT INTO sm_expert_consultations (cons_id, cardID, doctor) VALUES (?,?,?)");
+            for (String doctor : EXPERT_LIST) {
+                ExpertConsultation expertConsultation = new ExpertConsultation(helper.getUniqueID(), null, doctor, null);
+                expertConsultation.setCardID(card.getCardID());
+                ps.setInt(1, expertConsultation.getConsID());
+                ps.setInt(2, expertConsultation.getCardID());
+                ps.setString(3, expertConsultation.getDoctor());
+                ps.execute();
+                card.addExpertConsultation(expertConsultation);
+            }
         } catch (SQLException e) {
             LOGGER.error("SQLException ", e);
         }
@@ -258,5 +280,45 @@ public class SQLLiteDAOImpl implements DAO {
         closeConnection();
         return result;
     }
+
+    @Override
+    public void createExpertConsultation(ExpertConsultation expertConsultation) {
+        getConnection();
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO sm_expert_consultations VALUES (?,?,?,?,?)");
+            ps.setInt(1, expertConsultation.getConsID());
+            ps.setInt(2, expertConsultation.getCardID());
+            ps.setDate(3, expertConsultation.getDate());
+            ps.setString(4, expertConsultation.getDoctor());
+            ps.setString(5, expertConsultation.getConclusion());
+            ps.execute();
+        } catch (SQLException e) {
+            LOGGER.error("SQLException ", e);
+        }
+        closeConnection();
+    }
+
+    @Override
+    public void updateExpertConsultation(ExpertConsultation expertConsultation) {
+        getConnection();
+        try {
+            PreparedStatement ps = connection.prepareStatement("UPDATE sm_expert_consultations SET date = ? , doctor = ? , conclusion = ? WHERE cons_id = ?");
+            ps.setDate(1, expertConsultation.getDate());
+            ps.setString(2, expertConsultation.getDoctor());
+            ps.setString(3, expertConsultation.getConclusion());
+            ps.setInt(4, expertConsultation.getConsID());
+            ps.execute();
+        } catch (SQLException e) {
+            LOGGER.error("SQLException ", e);
+        }
+        closeConnection();
+    }
+
+    @Autowired
+    public void context(ApplicationContext context) {
+        this.context = context;
+    }
+
+
 }
 

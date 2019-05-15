@@ -1,6 +1,7 @@
 package com.sumdu.hospital.database;
 
 import com.sumdu.hospital.model.Card;
+import com.sumdu.hospital.model.ExpertConsultation;
 import com.sumdu.hospital.model.Patient;
 
 import java.sql.Connection;
@@ -16,7 +17,7 @@ public interface DAO {
 
     Map<String, String> getTableDefinition();
 
-    void deleteByID(int patientID);
+    void deleteByID(int id, Object object);
 
     void createPatient(Patient patient);
 
@@ -27,4 +28,9 @@ public interface DAO {
     void updateCard(Card card);
 
     int getID();
+
+    void createExpertConsultation(ExpertConsultation expertConsultation);
+
+    void updateExpertConsultation(ExpertConsultation expertConsultation);
+
 }

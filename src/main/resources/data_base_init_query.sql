@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS sm_cards
   pvt           TEXT,
   concomitant   TEXT,
   CONSTRAINT sm_cards_sm_patients FOREIGN KEY (patientID)
-    REFERENCES sm_patients (patientID)
+  REFERENCES sm_patients (patientID)
     ON DELETE CASCADE
 );
 
@@ -39,6 +39,23 @@ CREATE INDEX IF NOT EXISTS sm_cards_idx_1
   ON sm_cards (cardID ASC);
 
 -- End of file.
+
+-- Table: sm_expert_consultations
+CREATE TABLE IF NOT EXISTS sm_expert_consultations
+(
+  consID    INTEGER NOT NULL
+    CONSTRAINT sm_expert_consultations_pk PRIMARY KEY,
+  cardID     INTEGER NOT NULL,
+  date       DATE,
+  doctor     TEXT,
+  conclusion TEXT,
+  CONSTRAINT sm_expert_consultations FOREIGN KEY (cardID)
+  REFERENCES sm_cards (cardID)
+    ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS sm_expert_consultations_idx_1
+  ON sm_expert_consultations (consID ASC);
 
 CREATE TABLE sequence
 (

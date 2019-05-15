@@ -67,6 +67,7 @@ public class MedicalCardController {
             @Override
             public void handle(MouseEvent event) {
                 ExpertConsultationsController expertConsultationsController = context.getBean(ExpertConsultationsController.class);
+                expertConsultationsController.setCard(card);
                 mainController.setContent(expertConsultationsController, "/fxml/expertConsultations.fxml");
                 mainController.addBreadCrumb("Медична карта", stackPane, 2);
             }

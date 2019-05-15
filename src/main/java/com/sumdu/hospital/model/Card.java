@@ -1,6 +1,8 @@
 package com.sumdu.hospital.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Card {
     private int cardID;
@@ -14,6 +16,7 @@ public class Card {
     private String pvt;
     private String concomitant;
     private String week;
+    private List<ExpertConsultation> expertConsultationList;
 
     public Card() {
     }
@@ -112,5 +115,20 @@ public class Card {
 
     public void setWeek(String week) {
         this.week = week;
+    }
+
+    public List<ExpertConsultation> getExpertConsultationList() {
+        return expertConsultationList;
+    }
+
+    public void addExpertConsultation(ExpertConsultation expertConsultation) {
+        if (expertConsultationList == null) {
+            expertConsultationList = new ArrayList<>();
+        }
+        expertConsultationList.add(expertConsultation);
+    }
+
+    public void removeExpertConsultation(ExpertConsultation expertConsultation){
+        expertConsultationList.remove(expertConsultation);
     }
 }
