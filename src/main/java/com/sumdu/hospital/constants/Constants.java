@@ -48,6 +48,12 @@ public class Constants {
         FIELD_NAME_RATIO.put("date", "Дата");
         FIELD_NAME_RATIO.put("doctor", "Спеціаліст");
         FIELD_NAME_RATIO.put("conclusion", "Заключення");
+        FIELD_NAME_RATIO.put("pvtStart", "Початок ПВТ");
+        FIELD_NAME_RATIO.put("pvtEnd", "Закінчення ПВТ");
+        FIELD_NAME_RATIO.put("repeatPvtStart", "Початок повторної ПВТ");
+        FIELD_NAME_RATIO.put("repeatPvtEnd", "Закінчення повторної ПВТ");
+        FIELD_NAME_RATIO.put("ogkSurvey", "Обстеження ОГК");
+        FIELD_NAME_RATIO.put("allergicReactions", "Алергічні реакції");
 
     }
 

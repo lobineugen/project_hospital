@@ -13,28 +13,20 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.util.Pair;
 import javafx.util.StringConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static com.sumdu.hospital.constants.Constants.EMPTY;
 import static com.sumdu.hospital.constants.Constants.getStringConverter;
@@ -88,6 +80,10 @@ public class PatientCabinetController {
     public JFXTextArea pvt;
     @FXML
     public JFXTextArea concomitant;
+    @FXML
+    public JFXTextField allergicReactions;
+    @FXML
+    public JFXTextField ogkSurvey;
     private DAO dao;
     private Helper helper;
     private ShowDialog showDialog;
@@ -152,7 +148,24 @@ public class PatientCabinetController {
                     currentPatient.setPhoneNumber(phoneNumber.getText());
                 }
                 currentPatient.setAddressType(((RadioButton) addressType.getSelectedToggle()).getText());
-
+                if (pvtStart.getValue() != null) {
+                    currentPatient.setPvtStart(Date.valueOf(pvtStart.getValue()));
+                }
+                if (repeatPvtStart.getValue() != null) {
+                    currentPatient.setRepeatPvtStart(Date.valueOf(repeatPvtStart.getValue()));
+                }
+                if (pvtEnd.getValue() != null) {
+                    currentPatient.setPvtEnd(Date.valueOf(pvtEnd.getValue()));
+                }
+                if (repeatPvtEnd.getValue() != null) {
+                    currentPatient.setRepeatPvtEnd(Date.valueOf(repeatPvtEnd.getValue()));
+                }
+                if (!allergicReactions.getText().isEmpty()) {
+                    currentPatient.setAllergicReactions(allergicReactions.getText());
+                }
+                if (!ogkSurvey.getText().isEmpty()) {
+                    currentPatient.setOgkSurvey(ogkSurvey.getText());
+                }
                 if (create) {
                     dao.createPatient(currentPatient);
                     patientID.setText(String.valueOf(currentPatient.getPatientID()));
@@ -212,6 +225,12 @@ public class PatientCabinetController {
         concomitant.setText(EMPTY);
         pvt.setText(EMPTY);
         complication.setText(EMPTY);
+        pvtStart.setValue(null);
+        pvtEnd.setValue(null);
+        repeatPvtEnd.setValue(null);
+        repeatPvtStart.setValue(null);
+        allergicReactions.setText(EMPTY);
+        ogkSurvey.setText(EMPTY);
     }
 
     public void setPatient(Patient patient) {
@@ -220,7 +239,7 @@ public class PatientCabinetController {
         patientID.setText(String.valueOf(patient.getPatientID()));
         fullName.setText(patient.getFullName());
         passportID.setText(patient.getPassportID());
-        dateOfBirth.setValue(patient.getDateOfBirth().toLocalDate());
+        dateOfBirth.setValue(patient.getDateOfBirth() == null ? null : patient.getDateOfBirth().toLocalDate());
         phoneNumber.setText(patient.getPhoneNumber());
         workPlace.setText(patient.getWorkPlace());
         address.setText(patient.getAddress());
@@ -232,7 +251,16 @@ public class PatientCabinetController {
         for (Card card : patient.getCardsList()) {
             medicalCardsForStationaryPatientsContainer.getChildren().add(getCardButton(card));
         }
-        setDiagnosis(patient.getLastCard());
+        if (patient.getLastCard() != null) {
+            setDiagnosis(patient.getLastCard());
+        }
+        pvtStart.setValue(patient.getPvtStart() == null ? null : patient.getPvtStart().toLocalDate());
+        pvtEnd.setValue(patient.getPvtEnd() == null ? null : patient.getPvtEnd().toLocalDate());
+        repeatPvtEnd.setValue(patient.getRepeatPvtEnd() == null ? null : patient.getRepeatPvtEnd().toLocalDate());
+        repeatPvtStart.setValue(patient.getRepeatPvtStart() == null ? null : patient.getRepeatPvtStart().toLocalDate());
+        allergicReactions.setText(patient.getAllergicReactions());
+        ogkSurvey.setText(patient.getOgkSurvey());
+
     }
 
     public void setDiagnosis(Card card) {

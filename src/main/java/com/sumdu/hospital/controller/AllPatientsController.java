@@ -4,6 +4,9 @@ import com.sumdu.hospital.database.DAO;
 import com.sumdu.hospital.model.Patient;
 import com.sumdu.hospital.service.Export;
 import com.sumdu.hospital.service.ShowDialog;
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -101,6 +104,8 @@ public class AllPatientsController {
             }
         });
         allPatients.setContextMenu(contextMenu);
+
+
     }
 
     private void initializeEventHandlers() {

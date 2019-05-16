@@ -43,7 +43,13 @@ public class SQLLiteDAOImpl implements DAO {
             "       mainDiagnosis," +
             "       complication," +
             "       pvt," +
-            "       concomitant " +
+            "       concomitant, " +
+            "       pvtStart, " +
+            "       repeatPvtStart, " +
+            "       pvtEnd, " +
+            "       repeatPvtEnd, " +
+            "       allergicReactions, " +
+            "       ogkSurvey " +
             "FROM sm_patients p\n" +
             "LEFT OUTER JOIN (SELECT * FROM sm_cards GROUP BY patientID HAVING max(cardID)) c\n" +
             "ON p.patientID = c.patientID\n" +
@@ -81,7 +87,6 @@ public class SQLLiteDAOImpl implements DAO {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_PATIENT_QUERY);
             preparedStatement.setString(1, "%" + name + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("here");
             while (resultSet.next()) {
                 int patientID = resultSet.getInt("patientID");
                 Patient patient = new Patient(patientID,
@@ -92,6 +97,12 @@ public class SQLLiteDAOImpl implements DAO {
                 patient.setAddressType(resultSet.getString("addressType"));
                 patient.setPhoneNumber(resultSet.getString("phoneNumber"));
                 patient.setWorkPlace(resultSet.getString("workPlace"));
+                patient.setPvtStart(resultSet.getDate("pvtStart"));
+                patient.setPvtEnd(resultSet.getDate("pvtEnd"));
+                patient.setRepeatPvtEnd(resultSet.getDate("repeatPvtEnd"));
+                patient.setRepeatPvtStart(resultSet.getDate("repeatPvtStart"));
+                patient.setAllergicReactions(resultSet.getString("allergicReactions"));
+                patient.setOgkSurvey(resultSet.getString("ogkSurvey"));
 
                 PreparedStatement additionalStatement = connection.prepareStatement("SELECT * FROM sm_cards WHERE patientID = ? ORDER BY cardID");
                 additionalStatement.setInt(1, patientID);
@@ -110,7 +121,7 @@ public class SQLLiteDAOImpl implements DAO {
                     expertConsultationStatement.setInt(1, newCard.getCardID());
                     ResultSet expertResultSet = expertConsultationStatement.executeQuery();
                     while (expertResultSet.next()) {
-                        ExpertConsultation expertConsultation = new ExpertConsultation(expertResultSet.getInt("cons_id"),
+                        ExpertConsultation expertConsultation = new ExpertConsultation(expertResultSet.getInt("consID"),
                                 expertResultSet.getDate("date"),
                                 expertResultSet.getString("doctor"),
                                 expertResultSet.getString("conclusion"));
@@ -135,7 +146,7 @@ public class SQLLiteDAOImpl implements DAO {
         Map<String, String> result = new LinkedHashMap<>();
         getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT p.patientID, fullName, passportID, dateOfBirth, addressType,address,phoneNumber, workPlace, cardID,cardNumber, week,dateIN, dateOUT, mainDiagnosis, complication, pvt,concomitant FROM sm_patients p, sm_cards LIMIT 1");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT p.patientID, fullName, passportID, dateOfBirth, addressType,address,phoneNumber, workPlace,pvtStart,repeatPvtStart,pvtEnd,repeatPvtEnd,allergicReactions,ogkSurvey, cardID,cardNumber, week,dateIN, dateOUT, mainDiagnosis, complication, pvt,concomitant  FROM sm_patients p, sm_cards LIMIT 1");
             ResultSet resultSet = preparedStatement.executeQuery();
             for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                 String name = resultSet.getMetaData().getColumnName(i);
@@ -158,7 +169,7 @@ public class SQLLiteDAOImpl implements DAO {
             if (object instanceof Patient) {
                 preparedStatement = connection.prepareStatement("DELETE FROM sm_patients WHERE patientID = ?");
             } else if (object instanceof ExpertConsultation) {
-                preparedStatement = connection.prepareStatement("DELETE FROM sm_expert_consultations WHERE cons_id = ?");
+                preparedStatement = connection.prepareStatement("DELETE FROM sm_expert_consultations WHERE consID = ?");
             }
             Objects.requireNonNull(preparedStatement).setInt(1, id);
             preparedStatement.execute();
@@ -173,7 +184,7 @@ public class SQLLiteDAOImpl implements DAO {
     public void createPatient(Patient patient) {
         getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO sm_patients VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO sm_patients VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, patient.getPatientID());
             ps.setString(2, patient.getFullName());
             ps.setString(3, patient.getPassportID());
@@ -182,6 +193,12 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setString(6, patient.getAddress());
             ps.setString(7, patient.getPhoneNumber());
             ps.setString(8, patient.getWorkPlace());
+            ps.setDate(9, patient.getPvtStart());
+            ps.setDate(10, patient.getRepeatPvtStart());
+            ps.setDate(11, patient.getPvtEnd());
+            ps.setDate(12, patient.getRepeatPvtEnd());
+            ps.setString(13, patient.getAllergicReactions());
+            ps.setString(14, patient.getOgkSurvey());
             ps.execute();
         } catch (SQLException e) {
             LOGGER.error("SQLException ", e);
@@ -194,8 +211,9 @@ public class SQLLiteDAOImpl implements DAO {
         getConnection();
         try {
             PreparedStatement ps = connection.prepareStatement("UPDATE sm_patients\n" +
-                    "SET fullName = ?, passportID = ?, dateOfBirth = ?, addressType = ?, address = ?, phoneNumber = ?, workPlace = ?\n" +
-                    "WHERE patientID = ?");
+                    "  SET fullName = ?, passportID = ?, dateOfBirth = ?, addressType = ?, address = ?, phoneNumber = ?, workPlace = ?,\n" +
+                    "      pvtStart = ?, repeatPvtStart = ?, pvtEnd = ?, repeatPvtEnd = ?, allergicReactions = ?, ogkSurvey = ?\n" +
+                    "  WHERE patientID = ?");
             ps.setString(1, patient.getFullName());
             ps.setString(2, patient.getPassportID());
             ps.setDate(3, patient.getDateOfBirth() != null ? new Date(patient.getDateOfBirth().getTime()) : null);
@@ -203,7 +221,14 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setString(5, patient.getAddress());
             ps.setString(6, patient.getPhoneNumber());
             ps.setString(7, patient.getWorkPlace());
-            ps.setInt(8, patient.getPatientID());
+            ps.setDate(8, patient.getPvtStart());
+            ps.setDate(9, patient.getRepeatPvtStart());
+            ps.setDate(10, patient.getPvtEnd());
+            ps.setDate(11, patient.getRepeatPvtEnd());
+            ps.setString(12, patient.getAllergicReactions());
+            ps.setString(13, patient.getOgkSurvey());
+            ps.setInt(14, patient.getPatientID());
+            System.out.println("patient.getOgkSurvey(): " + patient.getOgkSurvey());
             ps.execute();
         } catch (SQLException e) {
             LOGGER.error("SQLException ", e);
@@ -224,7 +249,7 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setDate(5, card.getDateOut());
             ps.setString(6, card.getWeek());
             ps.execute();
-            ps = connection.prepareStatement("INSERT INTO sm_expert_consultations (cons_id, cardID, doctor) VALUES (?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO sm_expert_consultations (consID, cardID, doctor) VALUES (?,?,?)");
             for (String doctor : EXPERT_LIST) {
                 ExpertConsultation expertConsultation = new ExpertConsultation(helper.getUniqueID(), null, doctor, null);
                 expertConsultation.setCardID(card.getCardID());
@@ -302,7 +327,7 @@ public class SQLLiteDAOImpl implements DAO {
     public void updateExpertConsultation(ExpertConsultation expertConsultation) {
         getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("UPDATE sm_expert_consultations SET date = ? , doctor = ? , conclusion = ? WHERE cons_id = ?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE sm_expert_consultations SET date = ? , doctor = ? , conclusion = ? WHERE consID = ?");
             ps.setDate(1, expertConsultation.getDate());
             ps.setString(2, expertConsultation.getDoctor());
             ps.setString(3, expertConsultation.getConclusion());
