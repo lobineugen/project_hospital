@@ -83,6 +83,11 @@
             <version>3.17</version>
         </dependency>
 
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-materialdesignfont</artifactId>
+            <version>1.7.22-2</version>
+        </dependency>
 
     </dependencies>
 
