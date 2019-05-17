@@ -13,6 +13,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -270,8 +271,8 @@ public class PatientCabinetController {
         concomitant.setText(card.getConcomitant());
     }
 
-    private Button getCardButton(Card card) {
-        Button newCard = new Button(String.format("№ = %s\n Тиждень лікування = %s\n Дата виписки = %tF\n Дата госпіталізації = %tF",
+    private JFXButton getCardButton(Card card) {
+        JFXButton newCard = new JFXButton(String.format("№ = %s\n Тиждень лікування = %s\n Дата виписки = %tF\n Дата госпіталізації = %tF",
                 card.getCardNumber(), card.getWeek(), card.getDateOut(), card.getDateIn()));
         newCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -285,6 +286,7 @@ public class PatientCabinetController {
         });
         newCard.setPrefHeight(91);
         newCard.setMinWidth(100);
+        newCard.setMaxHeight(200);
         return newCard;
     }
 

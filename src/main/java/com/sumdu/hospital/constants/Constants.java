@@ -27,7 +27,7 @@ public class Constants {
 
     static {
         EXPERT_LIST.add("Кардіолог");
-        EXPERT_LIST.add("Невропатоло");
+        EXPERT_LIST.add("Невропатолог");
         EXPERT_LIST.add("Гастроентеролог");
         FIELD_NAME_RATIO.put("fullName", "ПІБ");
         FIELD_NAME_RATIO.put("passportID", "Номер документа");

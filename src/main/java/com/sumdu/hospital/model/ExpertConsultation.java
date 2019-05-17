@@ -9,6 +9,19 @@ public class ExpertConsultation {
     private String conclusion;
     private int cardID;
 
+    public ExpertConsultation() {
+    }
+
+    public ExpertConsultation(int consID) {
+        this.consID = consID;
+    }
+
+    public ExpertConsultation(Date date, String doctor, String conclusion) {
+        this.date = date;
+        this.doctor = doctor;
+        this.conclusion = conclusion;
+    }
+
     public ExpertConsultation(int consID, Date date, String doctor, String conclusion) {
         this.consID = consID;
         this.date = date;
@@ -54,5 +67,16 @@ public class ExpertConsultation {
 
     public void setCardID(int cardID) {
         this.cardID = cardID;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpertConsultation{" +
+                "consID=" + consID +
+                ", date=" + date +
+                ", doctor='" + doctor + '\'' +
+                ", conclusion='" + conclusion + '\'' +
+                ", cardID=" + cardID +
+                '}';
     }
 }

@@ -1,39 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<VBox fx:id="vBox" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity"
-      prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
-    <TableView fx:id="tableView" VBox.vgrow="SOMETIMES">
-        <placeholder>
-            <Label text="Даних не знайдено"/>
-        </placeholder>
-        <columns>
-        </columns>
-    </TableView>
-    <HBox>
-        <JFXButton fx:id="addExpertConsultation" text="Додати">
-            <graphic>
-                <MaterialDesignIconView fill="#168300" glyphName="CHECK_CIRCLE_OUTLINE"/>
-            </graphic>
-            <graphic>
-                <MaterialDesignIconView fill="#009a15" glyphName="PLUS_CIRCLE_OUTLINE" size="20"/>
-            </graphic>
-        </JFXButton>
-        <JFXButton fx:id="deleteExpertConsultation" text="Видалити">
-            <graphic>
-                <MaterialDesignIconView fill="#a80000" glyphName="DELETE" size="20"/>
-            </graphic>
-        </JFXButton>
-        <JFXButton fx:id="editExpertConsultation" text="Редагувати">
-            <graphic>
-                <MaterialDesignIconView fill="#0014a8" glyphName="EDIT" size="20"/>
-            </graphic>
-        </JFXButton>
-    </HBox>
-</VBox>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox fx:id="vBox" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1190.0">
+          <JFXListView fx:id="listView" VBox.vgrow="SOMETIMES" />
+          <HBox spacing="10.0">
+              <JFXButton fx:id="addExpertConsultation" text="Додати">
+                  <graphic>
+                      <MaterialDesignIconView fill="#009a15" glyphName="PLUS_CIRCLE_OUTLINE" size="20" />
+                  </graphic>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <font>
+                  <Font size="18.0" />
+               </font>
+              </JFXButton>
+              <JFXButton fx:id="deleteExpertConsultation" text="Видалити">
+                  <graphic>
+                      <MaterialDesignIconView fill="#a80000" glyphName="DELETE" size="20" />
+                  </graphic>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <font>
+                  <Font size="18.0" />
+               </font>
+              </JFXButton>
+              <JFXButton fx:id="editExpertConsultation" text="Редагувати">
+                  <graphic>
+                      <MaterialDesignIconView fill="#0014a8" glyphName="PENCIL" size="20" />
+                  </graphic>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <font>
+                  <Font size="18.0" />
+               </font>
+              </JFXButton>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+          </HBox>
+      </VBox>
+   </children>
+</StackPane>

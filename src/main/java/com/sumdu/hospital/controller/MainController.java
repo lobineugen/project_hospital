@@ -1,15 +1,13 @@
 package com.sumdu.hospital.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.sumdu.hospital.database.InitStructure;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -58,7 +56,11 @@ public class MainController {
 
             }
         });
-
+        mainTabPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+            double availableWidth = mainTabPane.getWidth() - 80;
+            mainTabPane.setTabMinWidth(availableWidth / 3);
+            mainTabPane.setTabMaxWidth(availableWidth / 3);
+        });
     }
 
     @Autowired
@@ -67,7 +69,7 @@ public class MainController {
     }
 
     public void addBreadCrumb(String buttonName, Node node, int level) {
-        Button button = new Button(buttonName);
+        JFXButton button = new JFXButton(buttonName);
         breadCrumbs.put(level, button);
         breadcrumbMaxLevel = level > breadcrumbMaxLevel ? level : breadcrumbMaxLevel;
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {

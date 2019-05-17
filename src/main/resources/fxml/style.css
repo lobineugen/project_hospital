@@ -9,8 +9,6 @@
 }
 
 .tab-pane {
-    -fx-tab-min-width: 370;
-    -fx-tab-max-width: 370;
     -fx-tab-min-height: 50px;
     -fx-tab-max-height: 50px;
 }

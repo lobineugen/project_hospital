@@ -1,28 +1,26 @@
 package com.sumdu.hospital.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import com.sumdu.hospital.database.DAO;
 import com.sumdu.hospital.model.Card;
 import com.sumdu.hospital.model.ExpertConsultation;
+import com.sumdu.hospital.service.Helper;
 import com.sumdu.hospital.service.ShowDialog;
+import com.sumdu.hospital.views.CreateExpertConsultationDialog;
+import com.sumdu.hospital.views.listcells.ExpertConsultationListCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.Optional;
-
-import static com.sumdu.hospital.constants.Constants.FIELD_NAME_RATIO;
 
 @Controller
 public class ExpertConsultationsController {
@@ -32,12 +30,13 @@ public class ExpertConsultationsController {
     @FXML
     public VBox vBox;
     @FXML
-    public TableView<ExpertConsultation> tableView;
+    private JFXListView<ExpertConsultation> listView;
     @FXML
     public JFXButton deleteExpertConsultation;
     @FXML
     public JFXButton editExpertConsultation;
     private ObservableList<ExpertConsultation> expertConsultations = FXCollections.observableArrayList();
+    private ApplicationContext context;
     private ShowDialog showDialog;
     private Card card;
     private DAO dao;
@@ -48,60 +47,56 @@ public class ExpertConsultationsController {
         this.dao = dao;
     }
 
+    @Autowired
+    public void context(ApplicationContext context) {
+        this.context = context;
+    }
+
     @FXML
     public void initialize() {
         initTable();
         initializeEventHandlers();
+        listView.setCellFactory(param -> new ExpertConsultationListCell());
     }
 
     private void initTable() {
-        TableColumn<ExpertConsultation, Date> date = new TableColumn<>();
-        TableColumn<ExpertConsultation, String> doctor = new TableColumn<>();
-        TableColumn<ExpertConsultation, String> conclusion = new TableColumn<>();
-        date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        doctor.setCellValueFactory(new PropertyValueFactory<>("doctor"));
-        conclusion.setCellValueFactory(new PropertyValueFactory<>("conclusion"));
-        date.setText(FIELD_NAME_RATIO.get("date"));
-        doctor.setText(FIELD_NAME_RATIO.get("doctor"));
-        conclusion.setText(FIELD_NAME_RATIO.get("conclusion"));
-        tableView.getColumns().add(date);
-        tableView.getColumns().add(doctor);
-        tableView.getColumns().add(conclusion);
-        date.prefWidthProperty().bind(tableView.widthProperty().multiply(0.2));
-        doctor.prefWidthProperty().bind(tableView.widthProperty().multiply(0.3));
-        conclusion.prefWidthProperty().bind(tableView.widthProperty().multiply(0.5));
         expertConsultations.clear();
         if (card.getExpertConsultationList() != null) {
             expertConsultations.addAll(card.getExpertConsultationList());
         }
-        tableView.setItems(expertConsultations);
+        listView.setItems(expertConsultations);
     }
 
     private void initializeEventHandlers() {
         addExpertConsultation.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                try {
-                    Optional<ExpertConsultation> optional = showDialog.createExpertConsultation(vBox, null);
+                CreateExpertConsultationDialog dialog = new CreateExpertConsultationDialog(vBox.getScene().getWindow());
+                boolean isOkClicked = dialog.showAndWait();
+                if (isOkClicked) {
+                    Optional<ExpertConsultation> optional = dialog.getExpertConsultation();
                     if (optional.isPresent()) {
-                        ExpertConsultation expertConsultation = optional.get();
-                        expertConsultation.setCardID(card.getCardID());
-                        dao.createExpertConsultation(expertConsultation);
-                        expertConsultations.add(expertConsultation);
+                        ExpertConsultation result = optional.get();
+                        result.setConsID(context.getBean(Helper.class).getUniqueID());
+                        result.setCardID(card.getCardID());
+                        dao.createExpertConsultation(result);
+                        expertConsultations.add(result);
                     }
-                } catch (IOException e) {
-                    LOGGER.error("IOException:", e);
                 }
+                /*ExpertConsultation expertConsultation = new ExpertConsultation(context.getBean(Helper.class).getUniqueID());
+                expertConsultation.setCardID(card.getCardID());
+                dao.createExpertConsultation(expertConsultation);
+                expertConsultations.add(expertConsultation);*/
             }
         });
         deleteExpertConsultation.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (tableView.getSelectionModel().isEmpty()) {
+                if (listView.getSelectionModel().isEmpty()) {
                     showDialog.showInformationDialog("Нічого не вибрано. Видалення неможливо!", vBox);
                     return;
                 }
-                ExpertConsultation expertConsultation = tableView.getSelectionModel().getSelectedItem();
+                ExpertConsultation expertConsultation = listView.getSelectionModel().getSelectedItem();
                 dao.deleteByID(expertConsultation.getConsID(), expertConsultation);
                 expertConsultations.remove(expertConsultation);
                 showDialog.showInformationDialog("Запис усішно вилучено!", vBox);
@@ -110,24 +105,30 @@ public class ExpertConsultationsController {
         editExpertConsultation.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (tableView.getSelectionModel().isEmpty()) {
+                ExpertConsultation expertConsultation = listView.getSelectionModel().getSelectedItem();
+                if (expertConsultation == null) {
                     showDialog.showInformationDialog("Нічого не вибрано. Редагування неможливо!", vBox);
                     return;
                 }
-                ExpertConsultation expertConsultation = tableView.getSelectionModel().getSelectedItem();
-                try {
-                    Optional<ExpertConsultation> optional = showDialog.createExpertConsultation(vBox, expertConsultation);
+                CreateExpertConsultationDialog dialog = new CreateExpertConsultationDialog(vBox.getScene().getWindow());
+                dialog.setExpertConsultation(expertConsultation);
+                boolean isOkClicked = dialog.showAndWait();
+                if (isOkClicked) {
+                    Optional<ExpertConsultation> optional = dialog.getExpertConsultation();
                     if (optional.isPresent()) {
-                        tableView.refresh();
-                        dao.updateExpertConsultation(optional.get());
+                        ExpertConsultation result = optional.get();
+                        int index = listView.getSelectionModel().getSelectedIndex();
+                        /*expertConsultations.remove(expertConsultation);
+                        expertConsultations.add(index, result);*/
+                        expertConsultations.set(index, result);
+                        System.out.println(expertConsultations);
+                        listView.refresh();
+                        dao.updateExpertConsultation(result);
                     }
-                } catch (IOException e) {
-                    LOGGER.error("IOException:", e);
                 }
             }
         });
     }
-
 
     public void setCard(Card card) {
         this.card = card;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox fx:id="vbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" VBox.vgrow="SOMETIMES">
+          <padding>
+              <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+          </padding>
+          <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0">
+              <JFXDatePicker fx:id="date" prefHeight="31.0" prefWidth="141.0" promptText="Дата" />
+              <JFXTextField fx:id="expert" prefHeight="31.0" prefWidth="277.0" promptText="Спеціаліст" HBox.hgrow="SOMETIMES" />
+          </HBox>
+          <Label text="Заключення:" />
+          <JFXTextArea fx:id="conclusion" prefHeight="140.0" prefWidth="373.0" VBox.vgrow="SOMETIMES" />
+      </VBox>
+      <JFXButton fx:id="save" buttonType="RAISED" contentDisplay="RIGHT" defaultButton="true" onAction="#onSaveClick" ripplerFill="BLACK" text="Зберегти">
+         <graphic>
+            <MaterialDesignIconView glyphName="CHECK_CIRCLE_OUTLINE" size="20" />
+         </graphic>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </JFXButton>
+   </children>
+</VBox>

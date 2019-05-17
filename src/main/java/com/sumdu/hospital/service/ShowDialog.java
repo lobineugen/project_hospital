@@ -1,8 +1,10 @@
 package com.sumdu.hospital.service;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.sumdu.hospital.model.Card;
+import com.sumdu.hospital.model.ExpertConsultation;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
@@ -166,8 +168,8 @@ public class ShowDialog {
         };
     }
 
-    public Optional createExpertConsultation(Pane primaryStage) throws IOException {
-        Dialog<Card> dialog = new Dialog<>();
+    public Optional createExpertConsultation(Pane primaryStage, ExpertConsultation expertConsultation) throws IOException {
+        Dialog<ExpertConsultation> dialog = new Dialog<>();
         dialog.setTitle("Вікно створення");
         dialog.setHeaderText("Заповніть всі поля щоб створити новий запис");
         dialog.initOwner(primaryStage.getScene().getWindow());
@@ -178,7 +180,7 @@ public class ShowDialog {
         dialog.setGraphic(imageView);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/fxml/expertConsultationsListCell.fxml"));
+                "/fxml/createExpertConsultation.fxml"));
         Pane pane = fxmlLoader.load();
 
         dialog.getDialogPane().setContent(pane);
