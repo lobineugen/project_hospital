@@ -228,7 +228,6 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setString(12, patient.getAllergicReactions());
             ps.setString(13, patient.getOgkSurvey());
             ps.setInt(14, patient.getPatientID());
-            System.out.println("patient.getOgkSurvey(): " + patient.getOgkSurvey());
             ps.execute();
         } catch (SQLException e) {
             LOGGER.error("SQLException ", e);

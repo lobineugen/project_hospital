@@ -13,7 +13,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -131,10 +130,13 @@ public class PatientCabinetController {
                 } else {
                     currentPatient.setFullName(fullName.getText());
                     currentPatient.setPassportID(passportID.getText());
-                    currentPatient.getLastCard().setMainDiagnosis(mainDiagnosis.getText());
-                    currentPatient.getLastCard().setPvt(pvt.getText());
-                    currentPatient.getLastCard().setComplication(complication.getText());
-                    currentPatient.getLastCard().setConcomitant(concomitant.getText());
+                    if (currentPatient.getLastCard() != null) {
+                        currentPatient.getLastCard().setMainDiagnosis(mainDiagnosis.getText());
+                        currentPatient.getLastCard().setPvt(pvt.getText());
+                        currentPatient.getLastCard().setComplication(complication.getText());
+                        currentPatient.getLastCard().setConcomitant(concomitant.getText());
+                    }
+
                 }
                 if (dateOfBirth.getValue() != null) {
                     currentPatient.setDateOfBirth(Date.valueOf(dateOfBirth.getValue()));
@@ -161,10 +163,10 @@ public class PatientCabinetController {
                 if (repeatPvtEnd.getValue() != null) {
                     currentPatient.setRepeatPvtEnd(Date.valueOf(repeatPvtEnd.getValue()));
                 }
-                if (!allergicReactions.getText().isEmpty()) {
+                if (allergicReactions.getText() != null) {
                     currentPatient.setAllergicReactions(allergicReactions.getText());
                 }
-                if (!ogkSurvey.getText().isEmpty()) {
+                if (ogkSurvey.getText() != null) {
                     currentPatient.setOgkSurvey(ogkSurvey.getText());
                 }
                 if (create) {
@@ -173,7 +175,9 @@ public class PatientCabinetController {
                     showDialog.showInformationDialog("Запис про пацієнта успішно створена", patientCabinet);
                 } else {
                     dao.updatePatient(currentPatient);
-                    dao.updateCard(currentPatient.getLastCard());
+                    if (currentPatient.getLastCard() != null) {
+                        dao.updateCard(currentPatient.getLastCard());
+                    }
                     showDialog.showInformationDialog("Запис про пацієнта " + currentPatient.getFullName() + " успішно оновлений!", patientCabinet);
                 }
             }

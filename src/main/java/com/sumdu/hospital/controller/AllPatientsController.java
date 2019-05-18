@@ -1,20 +1,19 @@
 package com.sumdu.hospital.controller;
 
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.sumdu.hospital.database.DAO;
 import com.sumdu.hospital.model.Patient;
 import com.sumdu.hospital.service.Export;
 import com.sumdu.hospital.service.ShowDialog;
-import com.sun.javafx.scene.control.skin.TableHeaderRow;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -36,15 +35,16 @@ public class AllPatientsController {
     @FXML
     public Button createPatient;
     @FXML
-    private AnchorPane allPatientsPane;
+    public JFXTreeTableView<Patient> treeTableView;
     @FXML
-    private TableView<Patient> allPatients;
+    private AnchorPane allPatientsPane;
     @FXML
     private TextField searchValue;
     @FXML
     private Button exportToXSLButton;
     private DAO dao;
     private ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
+    private TreeItem<Patient> root = new RecursiveTreeItem<>(patientObservableList, RecursiveTreeObject::getChildren);
     private ApplicationContext context;
     private ShowDialog showDialog;
 
@@ -62,19 +62,19 @@ public class AllPatientsController {
     }
 
     private void initTable(Map<String, String> definition) {
-        List<TableColumn<Patient, ?>> collection = new ArrayList<>();
+        List<TreeTableColumn<Patient, ?>> collection = new ArrayList<>();
         label:
         for (Map.Entry<String, String> entry : definition.entrySet()) {
-            TableColumn<Patient, ?> column;
+            TreeTableColumn<Patient, ?> column;
             switch (entry.getValue()) {
                 case TEXT:
-                    column = new TableColumn<Patient, String>();
+                    column = new TreeTableColumn<Patient, String>();
                     break;
                 case INTEGER:
-                    column = new TableColumn<Patient, Integer>();
+                    column = new TreeTableColumn<Patient, Integer>();
                     break;
                 case DATE:
-                    column = new TableColumn<Patient, Date>();
+                    column = new TreeTableColumn<Patient, Date>();
                     break;
                 default:
                     continue label;
@@ -83,42 +83,53 @@ public class AllPatientsController {
                 column.setVisible(false);
             }
             column.setText(FIELD_NAME_RATIO.get(entry.getKey()));
-            column.setCellValueFactory(new PropertyValueFactory<>(entry.getKey()));
+            column.setCellValueFactory(new TreeItemPropertyValueFactory<>(entry.getKey()));
             collection.add(column);
         }
-        allPatients.getColumns().addAll(collection);
+        treeTableView.getColumns().addAll(collection);
         ContextMenu contextMenu = new ContextMenu();
         MenuItem edit = new MenuItem("Редагувати");
         contextMenu.getItems().add(edit);
         edit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (allPatients.getSelectionModel().isEmpty()) {
+                if (treeTableView.getSelectionModel().isEmpty()) {
                     return;
                 }
-                Patient patient = allPatients.getSelectionModel().getSelectedItem();
+                Patient patient = treeTableView.getSelectionModel().getSelectedItem().getValue();
                 PatientCabinetController patientCabinetController = context.getBean(PatientCabinetController.class);
                 patientCabinetController.setPatient(patient);
                 MainController mainController = context.getBean(MainController.class);
                 mainController.mainTabPane.getSelectionModel().select(mainController.patientCabinet);
             }
         });
-        allPatients.setContextMenu(contextMenu);
-
+        treeTableView.setContextMenu(contextMenu);
+        treeTableView.setShowRoot(false);
 
     }
 
     private void initializeEventHandlers() {
-        searchValue.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                String inputText = searchValue.getText();
-                List<Patient> patients = dao.getPatientByName(inputText);
-                patientObservableList.clear();
-                patientObservableList.addAll(patients);
+//        searchValue.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+//            @Override
+//            public void handle(KeyEvent event) {
+//                String inputText = searchValue.getText();
+//                List<Patient> patients = dao.getPatientByName(inputText);
+//                patientObservableList.clear();
+//                patientObservableList.addAll(patients);
+//
+//            }
+//        });
 
-            }
+        searchValue.textProperty().addListener((o, oldVal, newVal) -> {
+            treeTableView.setPredicate(userProp -> {
+                final Patient patient = userProp.getValue();
+                return patient.getFullName().contains(newVal)
+                        || patient.getDateOfBirth().toString().contains(newVal)
+                        || patient.getAddress().contains(newVal)
+                        || patient.getWorkPlace().contains(newVal);
+            });
         });
+
         createPatient.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -128,14 +139,15 @@ public class AllPatientsController {
                 patientCabinetController.removePatient();
             }
         });
+        //todo 
         deleteCurrent.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (allPatients.getSelectionModel().isEmpty()) {
+                if (treeTableView.getSelectionModel().isEmpty()) {
                     showDialog.showInformationDialog("Нічого не вибрано. Видалення неможливо!", allPatientsPane);
                     return;
                 }
-                Patient patient = allPatients.getSelectionModel().getSelectedItem();
+                Patient patient = treeTableView.getSelectionModel().getSelectedItem().getValue();
                 Optional<String> result = showDialog.showTextInputDialog("Підтвердити видалення",
                         "Ви дійсно хочете видалити запис про пацієнта - \"" + patient.getFullName()
                                 + "\"\nВідновити дані буде неможливо!",
@@ -145,7 +157,8 @@ public class AllPatientsController {
                         dao.deleteByID(patient.getPatientID(), patient);
                         patientObservableList.remove(patient);
                         PatientCabinetController patientCabinetController = context.getBean(PatientCabinetController.class);
-                        if (Integer.valueOf(patientCabinetController.patientID.getText()) == patient.getPatientID()) {
+                        if (!patientCabinetController.patientID.getText().isEmpty()
+                                && Integer.valueOf(patientCabinetController.patientID.getText()) == patient.getPatientID()) {
                             patientCabinetController.removePatient();
                         }
                         showDialog.showInformationDialog("Запис про пацієнта повністю вилучено!", allPatientsPane);
@@ -184,7 +197,7 @@ public class AllPatientsController {
     public void fillTableView() {
         patientObservableList.clear();
         patientObservableList.addAll(dao.getPatientByName(""));
-        allPatients.setItems(patientObservableList);
+        treeTableView.setRoot(root);
     }
 
 

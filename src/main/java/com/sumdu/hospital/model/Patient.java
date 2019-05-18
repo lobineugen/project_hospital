@@ -1,11 +1,13 @@
 package com.sumdu.hospital.model;
 
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Patient {
+public class Patient extends RecursiveTreeObject<Patient> {
     private int patientID;
     private String fullName;
     private String passportID;
@@ -23,7 +25,7 @@ public class Patient {
     private String allergicReactions;
     private String ogkSurvey;
 
-    public Patient(int patientID, String fullName, String passportID) {
+    public Patient(int patientID, String fullName, String passportID)  {
         this.patientID = patientID;
         this.fullName = fullName;
         this.passportID = passportID;
