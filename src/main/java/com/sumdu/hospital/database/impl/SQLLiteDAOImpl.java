@@ -123,6 +123,9 @@ public class SQLLiteDAOImpl implements DAO {
                     newCard.setRecommendations(additionalResult.getString("recommendations"));
                     newCard.setDoctor(additionalResult.getString("doctor"));
 
+                    newCard.setEpidHistory(additionalResult.getString("epidHistory"));
+                    newCard.setClinicalData(additionalResult.getString("clinicalData"));
+
                     PreparedStatement expertConsultationStatement = connection.prepareStatement("SELECT * FROM sm_expert_consultations WHERE cardID = ?");
                     expertConsultationStatement.setInt(1, newCard.getCardID());
                     ResultSet expertResultSet = expertConsultationStatement.executeQuery();
@@ -157,8 +160,7 @@ public class SQLLiteDAOImpl implements DAO {
             for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                 String name = resultSet.getMetaData().getColumnName(i);
                 String type = resultSet.getMetaData().getColumnTypeName(i);
-                result.put(name,
-                        type);
+                result.put(name, type);
             }
         } catch (SQLException e) {
             LOGGER.error("SQLException ", e);
@@ -273,7 +275,7 @@ public class SQLLiteDAOImpl implements DAO {
     public void updateCard(Card card) {
         getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("UPDATE sm_cards SET mainDiagnosis = ? , complication = ? , pvt = ?, concomitant = ?, etiotropicTherapy = ?, secondTherapy = ?, recommendations= ?, doctor = ?  WHERE cardID = ?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE sm_cards SET mainDiagnosis = ? , complication = ? , pvt = ?, concomitant = ?, etiotropicTherapy = ?, secondTherapy = ?, recommendations= ?, doctor = ?, epidHistory = ?, clinicalData = ?  WHERE cardID = ?");
             ps.setString(1, card.getMainDiagnosis());
             ps.setString(2, card.getComplication());
             ps.setString(3, card.getPvt());
@@ -282,7 +284,9 @@ public class SQLLiteDAOImpl implements DAO {
             ps.setString(6, card.getSecondTherapy());
             ps.setString(7, card.getRecommendations());
             ps.setString(8, card.getDoctor());
-            ps.setInt(9, card.getCardID());
+            ps.setString(9, card.getEpidHistory());
+            ps.setString(10, card.getClinicalData());
+            ps.setInt(11, card.getCardID());
             ps.execute();
         } catch (SQLException e) {
             LOGGER.error("SQLException ", e);

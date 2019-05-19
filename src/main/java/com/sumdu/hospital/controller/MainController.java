@@ -7,15 +7,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
-import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -76,7 +76,6 @@ public class MainController {
             @Override
             public void handle(MouseEvent event) {
                 content.setContent(node);
-
                 if (level <= breadcrumbMaxLevel) {
                     for (Map.Entry<Integer, Node> entry : breadCrumbs.entrySet()) {
                         if (entry.getKey() >= level) {

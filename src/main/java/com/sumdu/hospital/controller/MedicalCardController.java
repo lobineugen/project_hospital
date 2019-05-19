@@ -6,7 +6,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import org.apache.commons.collections4.functors.ExceptionPredicate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -28,6 +27,10 @@ public class MedicalCardController {
     public JFXButton labDiagnostics;
     @FXML
     public JFXButton expertConsultations;
+    @FXML
+    public JFXButton epidemiologicalHistory;
+    @FXML
+    public JFXButton clinicalData;
 
     public MedicalCardController(ApplicationContext context, MainController mainController) {
         this.context = context;
@@ -72,7 +75,24 @@ public class MedicalCardController {
                 mainController.addBreadCrumb("Медична карта", stackPane, 2);
             }
         });
-
+        epidemiologicalHistory.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                EpidemiologicalHistoryController epidemiologicalHistoryController = context.getBean(EpidemiologicalHistoryController.class);
+                epidemiologicalHistoryController.setCard(card);
+                mainController.setContent(epidemiologicalHistoryController, "/fxml/epidemiologicalHistory.fxml");
+                mainController.addBreadCrumb("Медична карта", stackPane, 2);
+            }
+        });
+        clinicalData.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                ClinicalDataController clinicalDataController = context.getBean(ClinicalDataController.class);
+                clinicalDataController.setCard(card);
+                mainController.setContent(clinicalDataController, "/fxml/epidemiologicalHistory.fxml");
+                mainController.addBreadCrumb("Медична карта", stackPane, 2);
+            }
+        });
     }
 
     public void setCard(Card card) {

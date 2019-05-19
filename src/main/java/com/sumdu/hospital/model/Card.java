@@ -17,6 +17,8 @@ public class Card {
     private String concomitant;
     private String week;
     private List<ExpertConsultation> expertConsultationList;
+    private String epidHistory;
+    private String clinicalData;
     private String etiotropicTherapy;
     private String secondTherapy;
     private String recommendations;
@@ -134,6 +136,22 @@ public class Card {
 
     public void removeExpertConsultation(ExpertConsultation expertConsultation){
         expertConsultationList.remove(expertConsultation);
+    }
+
+    public String getEpidHistory() {
+        return epidHistory;
+    }
+
+    public void setEpidHistory(String epidHistory) {
+        this.epidHistory = epidHistory;
+    }
+
+    public String getClinicalData() {
+        return clinicalData;
+    }
+
+    public void setClinicalData(String clinicalData) {
+        this.clinicalData = clinicalData;
     }
 
     public String getEtiotropicTherapy() {
