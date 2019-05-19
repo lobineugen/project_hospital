@@ -117,6 +117,12 @@ public class SQLLiteDAOImpl implements DAO {
                     newCard.setComplication(additionalResult.getString("complication"));
                     newCard.setPvt(additionalResult.getString("pvt"));
                     newCard.setConcomitant(additionalResult.getString("concomitant"));
+
+                    newCard.setEtiotropicTherapy(additionalResult.getString("etiotropicTherapy"));
+                    newCard.setSecondTherapy(additionalResult.getString("secondTherapy"));
+                    newCard.setRecommendations(additionalResult.getString("recommendations"));
+                    newCard.setDoctor(additionalResult.getString("doctor"));
+
                     PreparedStatement expertConsultationStatement = connection.prepareStatement("SELECT * FROM sm_expert_consultations WHERE cardID = ?");
                     expertConsultationStatement.setInt(1, newCard.getCardID());
                     ResultSet expertResultSet = expertConsultationStatement.executeQuery();
@@ -178,7 +184,6 @@ public class SQLLiteDAOImpl implements DAO {
         }
         closeConnection();
     }
-
 
     @Override
     public void createPatient(Patient patient) {
@@ -268,12 +273,16 @@ public class SQLLiteDAOImpl implements DAO {
     public void updateCard(Card card) {
         getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("UPDATE sm_cards SET mainDiagnosis = ? , complication = ? , pvt = ?, concomitant = ? WHERE cardID = ?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE sm_cards SET mainDiagnosis = ? , complication = ? , pvt = ?, concomitant = ?, etiotropicTherapy = ?, secondTherapy = ?, recommendations= ?, doctor = ?  WHERE cardID = ?");
             ps.setString(1, card.getMainDiagnosis());
             ps.setString(2, card.getComplication());
             ps.setString(3, card.getPvt());
             ps.setString(4, card.getConcomitant());
-            ps.setInt(5, card.getCardID());
+            ps.setString(5, card.getEtiotropicTherapy());
+            ps.setString(6, card.getSecondTherapy());
+            ps.setString(7, card.getRecommendations());
+            ps.setString(8, card.getDoctor());
+            ps.setInt(9, card.getCardID());
             ps.execute();
         } catch (SQLException e) {
             LOGGER.error("SQLException ", e);

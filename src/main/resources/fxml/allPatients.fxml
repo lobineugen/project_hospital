@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
 <AnchorPane fx:id="allPatientsPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1175.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sumdu.hospital.controller.AllPatientsController">
     <JFXTreeTableView fx:id="treeTableView" cache="true" layoutY="99.0" prefHeight="495.0" prefWidth="1175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="95.0">
         <placeholder>
@@ -11,8 +15,20 @@
         <columns>
         </columns>
     </JFXTreeTableView>
-    <TextField fx:id="searchValue" layoutY="55.0" prefHeight="31.0" prefWidth="1084.0" promptText="Введіть значення для пошуку" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="91.0" />
-    <Button fx:id="exportToXSLButton" layoutX="1091.0" layoutY="55.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="84.0" text="Експорт в XSL" AnchorPane.rightAnchor="0.0" />
-    <Button fx:id="createPatient" layoutX="-2.0" layoutY="14.0" mnemonicParsing="false" text="+" AnchorPane.leftAnchor="10.0" />
-    <Button fx:id="deleteCurrent" layoutX="56.0" layoutY="14.0" mnemonicParsing="false" prefWidth="31.0" text="-" AnchorPane.leftAnchor="50.0" />
+    <TextField fx:id="searchValue" layoutY="55.0" prefHeight="31.0" prefWidth="1014.0" promptText="Введіть значення для пошуку" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="161.0" />
+   <JFXButton fx:id="createPatient" layoutX="20.0" layoutY="14.0" text="Створити пацієнта">
+      <graphic>
+         <MaterialDesignIconView fill="#168300" glyphName="ACCOUNT_PLUS" size="20" />
+      </graphic>
+   </JFXButton>
+   <JFXButton fx:id="deleteCurrent" layoutX="205.0" layoutY="14.0" text="Видалити пацієнта">
+      <graphic>
+         <MaterialDesignIconView fill="#a80000" glyphName="ACCOUNT_MINUS" size="20" />
+      </graphic>
+   </JFXButton>
+   <JFXButton fx:id="exportToXSLButton" contentDisplay="RIGHT" layoutX="1036.0" layoutY="55.0" prefHeight="31.0" prefWidth="155.0" text="Експорт в XSL " AnchorPane.rightAnchor="0.0">
+      <graphic>
+         <MaterialDesignIconView glyphName="EXPORT" size="20" />
+      </graphic>
+   </JFXButton>
 </AnchorPane>

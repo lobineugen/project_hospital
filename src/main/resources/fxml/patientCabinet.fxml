@@ -53,12 +53,12 @@
         </HBox>
         <Label text="Місце проживання:" GridPane.rowIndex="3" />
         <HBox alignment="CENTER" spacing="30.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-            <JFXRadioButton fx:id="cityRadio" selected="true" text="Місто">
+            <JFXRadioButton fx:id="cityRadio" focusTraversable="false" selected="true" text="Місто">
                 <toggleGroup>
                     <ToggleGroup fx:id="addressType" />
                 </toggleGroup>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="villageRadio" text="Село" toggleGroup="$addressType" />
+            <JFXRadioButton fx:id="villageRadio" focusTraversable="false" text="Село" toggleGroup="$addressType" />
         </HBox>
         <Label text="Номер телефону:" GridPane.rowIndex="4" GridPane.valignment="BOTTOM" />
         <Label text="Місце роботи, посада:" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
@@ -75,9 +75,9 @@
         <Label text="Закінчення повторної ПВТ:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
         <Label maxHeight="1.7976931348623157E308" prefHeight="81.0" prefWidth="175.0" text="Медична картка стаціонарного хворого:" wrapText="true" GridPane.rowIndex="14" />
         <Label maxHeight="1.7976931348623157E308" prefHeight="73.0" prefWidth="175.0" text="Медична картка амбулаторного хворого:" wrapText="true" GridPane.rowIndex="15" />
-        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="14">
+        <ScrollPane fitToHeight="true" fitToWidth="true" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="14">
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                <JFXButton fx:id="addMedicalCardToStationaryPatient" contentDisplay="CENTER" layoutX="41.0" layoutY="34.0" prefHeight="97.0" prefWidth="70.0" ripplerFill="#96dad3" text=" " textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <JFXButton fx:id="addMedicalCardToStationaryPatient" contentDisplay="CENTER" focusTraversable="false" layoutX="41.0" layoutY="34.0" prefHeight="97.0" prefWidth="70.0" ripplerFill="#96dad3" text=" " textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <graphic>
                         <MaterialDesignIconView fill="#009688" glyphName="FOLDER_PLUS" size="40" />
                     </graphic>
@@ -102,7 +102,7 @@
         <JFXDatePicker fx:id="pvtEnd" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.rowIndex="12" />
         <JFXDatePicker fx:id="repeatPvtStart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="13" />
         <JFXDatePicker fx:id="repeatPvtEnd" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.rowIndex="13" />
-        <JFXButton fx:id="medicalCardOfAmbulatoryPatient" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+        <JFXButton fx:id="medicalCardOfAmbulatoryPatient" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="15" />
         <JFXButton fx:id="save" buttonType="RAISED" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Зберегти" GridPane.columnIndex="3" GridPane.rowIndex="16">
             <graphic>
                 <MaterialDesignIconView glyphName="CHECK_CIRCLE_OUTLINE" size="20" />

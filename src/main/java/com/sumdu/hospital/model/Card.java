@@ -17,6 +17,10 @@ public class Card {
     private String concomitant;
     private String week;
     private List<ExpertConsultation> expertConsultationList;
+    private String etiotropicTherapy;
+    private String secondTherapy;
+    private String recommendations;
+    private String doctor;
 
     public Card() {
     }
@@ -130,5 +134,37 @@ public class Card {
 
     public void removeExpertConsultation(ExpertConsultation expertConsultation){
         expertConsultationList.remove(expertConsultation);
+    }
+
+    public String getEtiotropicTherapy() {
+        return etiotropicTherapy;
+    }
+
+    public void setEtiotropicTherapy(String etiotropicTherapy) {
+        this.etiotropicTherapy = etiotropicTherapy;
+    }
+
+    public String getSecondTherapy() {
+        return secondTherapy;
+    }
+
+    public void setSecondTherapy(String secondTherapy) {
+        this.secondTherapy = secondTherapy;
+    }
+
+    public String getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(String recommendations) {
+        this.recommendations = recommendations;
+    }
+
+    public String getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(String doctor) {
+        this.doctor = doctor;
     }
 }

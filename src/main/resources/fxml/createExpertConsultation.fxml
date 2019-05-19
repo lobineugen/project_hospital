@@ -23,7 +23,7 @@
           <Label text="Заключення:" />
           <JFXTextArea fx:id="conclusion" prefHeight="140.0" prefWidth="373.0" VBox.vgrow="SOMETIMES" />
       </VBox>
-      <JFXButton fx:id="save" buttonType="RAISED" contentDisplay="RIGHT" defaultButton="true" onAction="#onSaveClick" ripplerFill="BLACK" text="Зберегти">
+      <JFXButton fx:id="save" buttonType="RAISED" defaultButton="true" onAction="#onSaveClick" ripplerFill="BLACK" text="Зберегти">
          <graphic>
             <MaterialDesignIconView glyphName="CHECK_CIRCLE_OUTLINE" size="20" />
          </graphic>
