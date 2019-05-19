@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Constants {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static final String TEXT = "TEXT";
     public static final String DATE = "DATE";
     public static final String INTEGER = "INTEGER";
@@ -21,11 +22,21 @@ public class Constants {
     public static final String WARNING_DIALOG = "Попереджувальний діалог";
     public static final String REQUIRED_FIELD = "Поле обов'язкове для заповнення!";
     public static final String EMPTY = "";
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static final SimpleDateFormat MILLISECOND_FORMAT = new SimpleDateFormat("SSS");
     public static final List<String> EXPERT_LIST = new ArrayList<>();
+    public static final Map<String, String> EPIDEMIOLOGICAL_HISTORY = new HashMap<>();
+    public static final Map<String, String> CLINICAL_DATA = new HashMap<>();
 
     static {
+        EPIDEMIOLOGICAL_HISTORY.put("1", "Рецепієнт Крові");
+        EPIDEMIOLOGICAL_HISTORY.put("2", "Донор Крові");
+        EPIDEMIOLOGICAL_HISTORY.put("3", "Татуювання");
+        EPIDEMIOLOGICAL_HISTORY.put("4", "Пірсинг");
+        EPIDEMIOLOGICAL_HISTORY.put("5", "Манікюр ті інші процедури");
+        EPIDEMIOLOGICAL_HISTORY.put("6", "ПІН");
+        CLINICAL_DATA.put("1","Гіркота в роті");
+        CLINICAL_DATA.put("2","Тяжість в прявому підребер'ї");
+        CLINICAL_DATA.put("3","Біль в прявому підребер'ї");
         EXPERT_LIST.add("Кардіолог");
         EXPERT_LIST.add("Невропатолог");
         EXPERT_LIST.add("Гастроентеролог");

@@ -5,20 +5,13 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.sumdu.hospital.database.DAO;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
-import static com.sumdu.hospital.constants.Constants.EMPTY;
 import static com.sumdu.hospital.constants.Constants.MILLISECOND_FORMAT;
 import static com.sumdu.hospital.constants.Constants.REQUIRED_FIELD;
 
@@ -43,20 +36,6 @@ public class Helper {
         return id;
     }
 
-    public boolean isNotEmpty(Control control) {
-        if (control instanceof TextField
-                && !((TextField) control).getText().isEmpty()) {
-            return true;
-        } else if (control instanceof DatePicker
-                && ((DatePicker) control).getValue() != null) {
-            return true;
-        }
-        showDialog.showErrorDialog("Неможливо створити або змінити запис! Одне або кілька обов'язкових полів порожні!",
-                "",
-                (Pane) control.getParent());
-        return false;
-    }
-
     public void addRequiredValidator(Control currentControl) {
         RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
         requiredFieldValidator.setMessage(REQUIRED_FIELD);
@@ -67,6 +46,7 @@ public class Helper {
         } else if (currentControl instanceof JFXTextArea) {
             ((JFXTextArea) currentControl).getValidators().add(requiredFieldValidator);
         }
-
     }
+
+
 }

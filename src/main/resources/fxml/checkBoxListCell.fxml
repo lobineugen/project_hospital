@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<HBox fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="36.0" prefWidth="432.0" xmlns:fx="http://javafx.com/fxml/1">
+    <JFXTextField fx:id="textField" prefHeight="25.0" prefWidth="344.0">
+        <HBox.margin>
+            <Insets bottom="5.0" left="20.0" right="20.0" top="5.0"/>
+        </HBox.margin>
+    </JFXTextField>
+    <JFXCheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="26.0" prefWidth="22.0">
+        <HBox.margin>
+            <Insets bottom="5.0" right="20.0" top="5.0"/>
+        </HBox.margin>
+    </JFXCheckBox>
+</HBox>

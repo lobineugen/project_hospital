@@ -11,12 +11,12 @@ CREATE TABLE IF NOT EXISTS sm_patients
   address           TEXT,
   phoneNumber       TEXT,
   workPlace         TEXT,
-  pvtStart          date,
-  repeatPvtStart    date,
-  pvtEnd            date,
-  repeatPvtEnd      date,
-  allergicReactions text,
-  ogkSurvey         text
+  pvtStart          DATE,
+  repeatPvtStart    DATE,
+  pvtEnd            DATE,
+  repeatPvtEnd      DATE,
+  allergicReactions TEXT,
+  ogkSurvey         TEXT
 );
 
 CREATE INDEX IF NOT EXISTS patientID_index
@@ -36,8 +36,10 @@ CREATE TABLE IF NOT EXISTS sm_cards
   complication  TEXT,
   pvt           TEXT,
   concomitant   TEXT,
+  epidHistory   TEXT,
+  clinicalData  TEXT,
   CONSTRAINT sm_cards_sm_patients FOREIGN KEY (patientID)
-    REFERENCES sm_patients (patientID)
+  REFERENCES sm_patients (patientID)
     ON DELETE CASCADE
 );
 
@@ -56,7 +58,7 @@ CREATE TABLE IF NOT EXISTS sm_expert_consultations
   doctor     TEXT,
   conclusion TEXT,
   CONSTRAINT sm_expert_consultations FOREIGN KEY (cardID)
-    REFERENCES sm_cards (cardID)
+  REFERENCES sm_cards (cardID)
     ON DELETE CASCADE
 );
 

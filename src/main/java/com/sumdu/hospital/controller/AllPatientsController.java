@@ -12,10 +12,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +87,7 @@ public class AllPatientsController {
             }
             column.setText(FIELD_NAME_RATIO.get(entry.getKey()));
             column.setCellValueFactory(new TreeItemPropertyValueFactory<>(entry.getKey()));
+            makeHeaderWrappable(column);
             collection.add(column);
         }
         treeTableView.getColumns().addAll(collection);
@@ -139,7 +143,6 @@ public class AllPatientsController {
                 patientCabinetController.removePatient();
             }
         });
-        //todo 
         deleteCurrent.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -198,6 +201,21 @@ public class AllPatientsController {
         patientObservableList.clear();
         patientObservableList.addAll(dao.getPatientByName(""));
         treeTableView.setRoot(root);
+    }
+
+    private void makeHeaderWrappable(TreeTableColumn col) {
+        Label label = new Label(col.getText());
+        label.setStyle("-fx-padding: 4px;");
+        label.setWrapText(true);
+        label.setAlignment(Pos.CENTER);
+        label.setTextAlignment(TextAlignment.JUSTIFY);
+
+        StackPane stack = new StackPane();
+        stack.getChildren().add(label);
+        stack.prefWidthProperty().bind(col.widthProperty().subtract(5));
+        label.prefWidthProperty().bind(stack.prefWidthProperty());
+        col.setText(null);
+        col.setGraphic(stack);
     }
 
 

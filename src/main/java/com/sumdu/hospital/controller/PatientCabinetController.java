@@ -236,6 +236,9 @@ public class PatientCabinetController {
         repeatPvtStart.setValue(null);
         allergicReactions.setText(EMPTY);
         ogkSurvey.setText(EMPTY);
+        MainController mainController = context.getBean(MainController.class);
+        mainController.breadCrumbsContainer.getChildren().clear();
+        mainController.content.setContent(patientCabinet);
     }
 
     public void setPatient(Patient patient) {
