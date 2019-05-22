@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -11,10 +12,15 @@
 
 <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox fx:id="vBox" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1190.0">
+      <VBox fx:id="vBox" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1190.0">
+         <Label fx:id="title">
+            <font>
+               <Font size="24.0" />
+            </font>
+         </Label>
           <JFXListView fx:id="listView" VBox.vgrow="SOMETIMES" />
           <HBox spacing="10.0">
-              <JFXButton fx:id="addExpertConsultation" text="Додати">
+              <JFXButton fx:id="addButton" text="Додати">
                   <graphic>
                       <MaterialDesignIconView fill="#168300" glyphName="PLUS_CIRCLE_OUTLINE" size="20" />
                   </graphic>
@@ -25,7 +31,7 @@
                   <Font size="18.0" />
                </font>
               </JFXButton>
-              <JFXButton fx:id="deleteExpertConsultation" text="Видалити">
+              <JFXButton fx:id="deleteButton" text="Видалити">
                   <graphic>
                       <MaterialDesignIconView fill="#a80000" glyphName="DELETE" size="20" />
                   </graphic>
@@ -36,7 +42,7 @@
                   <Font size="18.0" />
                </font>
               </JFXButton>
-              <JFXButton fx:id="editExpertConsultation" text="Редагувати">
+              <JFXButton fx:id="editButton" text="Редагувати">
                   <graphic>
                       <MaterialDesignIconView fill="#0014a8" glyphName="PENCIL" size="20" />
                   </graphic>

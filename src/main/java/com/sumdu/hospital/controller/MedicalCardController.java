@@ -62,6 +62,7 @@ public class MedicalCardController {
             @Override
             public void handle(MouseEvent event) {
                 LabDiagnosticsController labDiagnosticsController = context.getBean(LabDiagnosticsController.class);
+                labDiagnosticsController.setCard(card);
                 mainController.setContent(labDiagnosticsController, "/fxml/labDiagnostics.fxml");
                 mainController.addBreadCrumb("Медична карта", stackPane, 2);
             }
@@ -71,7 +72,7 @@ public class MedicalCardController {
             public void handle(MouseEvent event) {
                 ExpertConsultationsController expertConsultationsController = context.getBean(ExpertConsultationsController.class);
                 expertConsultationsController.setCard(card);
-                mainController.setContent(expertConsultationsController, "/fxml/expertConsultations.fxml");
+                mainController.setContent(expertConsultationsController, "/fxml/listCRUD.fxml");
                 mainController.addBreadCrumb("Медична карта", stackPane, 2);
             }
         });
