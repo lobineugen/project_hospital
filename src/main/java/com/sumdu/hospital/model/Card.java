@@ -23,6 +23,7 @@ public class Card {
     private String secondTherapy;
     private String recommendations;
     private String doctor;
+    private String cardType;
 
     public Card() {
     }
@@ -184,5 +185,14 @@ public class Card {
 
     public void setDoctor(String doctor) {
         this.doctor = doctor;
+    }
+
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
     }
 }

@@ -25,23 +25,24 @@ CREATE INDEX IF NOT EXISTS patientID_index
 -- Table: sm_cards
 CREATE TABLE IF NOT EXISTS sm_cards
 (
-  cardID        INTEGER NOT NULL
+  cardID            INTEGER NOT NULL
     CONSTRAINT sm_cards_pk PRIMARY KEY,
-  patientID           INTEGER NOT NULL,
-  cardNumber          INTEGER,
-  week                TEXT,
-  dateIn              DATE,
-  dateOut             DATE,
-  mainDiagnosis       TEXT,
-  complication        TEXT,
-  pvt                 TEXT,
-  concomitant         TEXT,
-  etiotropicTherapy   TEXT,
-  secondTherapy       TEXT,
-  recommendations     TEXT,
-  doctor              TEXT,
-  epidHistory         TEXT,
-  clinicalData        TEXT,
+  patientID         INTEGER NOT NULL,
+  cardType          text,
+  cardNumber        INTEGER,
+  week              TEXT,
+  dateIn            DATE,
+  dateOut           DATE,
+  mainDiagnosis     TEXT,
+  complication      TEXT,
+  pvt               TEXT,
+  concomitant       TEXT,
+  etiotropicTherapy TEXT,
+  secondTherapy     TEXT,
+  recommendations   TEXT,
+  doctor            TEXT,
+  epidHistory       TEXT,
+  clinicalData      TEXT,
   CONSTRAINT sm_cards_sm_patients FOREIGN KEY (patientID)
   REFERENCES sm_patients (patientID)
     ON DELETE CASCADE
@@ -71,26 +72,26 @@ CREATE INDEX IF NOT EXISTS sm_expert_consultations_idx_1
 
 -- Table: sm_analyzes
 CREATE TABLE IF NOT EXISTS sm_analyzes (
-    analysisId INTEGER
-     CONSTRAINT sm_analyzes_pk PRIMARY KEY,
-    cardID INTEGER NOT NULL,
-    analysisType TEXT,
-    analysisDate DATE,
-    CONSTRAINT sm_analyzes_sm_cards FOREIGN KEY (cardID)
-    REFERENCES sm_cards (cardID)
-     ON DELETE CASCADE
+  analysisId   INTEGER
+    CONSTRAINT sm_analyzes_pk PRIMARY KEY,
+  cardID       INTEGER NOT NULL,
+  analysisType TEXT,
+  analysisDate DATE,
+  CONSTRAINT sm_analyzes_sm_cards FOREIGN KEY (cardID)
+  REFERENCES sm_cards (cardID)
+    ON DELETE CASCADE
 );
 
 -- Table: sm_analyzes_params
 CREATE TABLE IF NOT EXISTS sm_analyzes_params (
-    paramId INTEGER
-     CONSTRAINT sm_analyzes_params_pk PRIMARY KEY,
-    analysisId INTEGER NOT NULL,
-    paramDate DATE,
-    attrName TEXT,
-    value TEXT,
-    CONSTRAINT sm_analyzes_params_sm_analyzes FOREIGN KEY (analysisId)
-    REFERENCES sm_analyzes (analysisId)
+  paramId    INTEGER
+    CONSTRAINT sm_analyzes_params_pk PRIMARY KEY,
+  analysisId INTEGER NOT NULL,
+  paramDate  DATE,
+  attrName   TEXT,
+  value      TEXT,
+  CONSTRAINT sm_analyzes_params_sm_analyzes FOREIGN KEY (analysisId)
+  REFERENCES sm_analyzes (analysisId)
     ON DELETE CASCADE
 );
 

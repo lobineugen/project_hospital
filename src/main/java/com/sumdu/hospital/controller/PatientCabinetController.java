@@ -28,8 +28,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Optional;
 
-import static com.sumdu.hospital.constants.Constants.EMPTY;
-import static com.sumdu.hospital.constants.Constants.getStringConverter;
+import static com.sumdu.hospital.constants.Constants.*;
 
 @Controller
 public class PatientCabinetController {
@@ -84,6 +83,7 @@ public class PatientCabinetController {
     public JFXTextField allergicReactions;
     @FXML
     public JFXTextField ogkSurvey;
+    public JFXButton medicalCardOfAmbulatoryPatient;
     private DAO dao;
     private Helper helper;
     private ShowDialog showDialog;
@@ -173,6 +173,17 @@ public class PatientCabinetController {
                     dao.createPatient(currentPatient);
                     patientID.setText(String.valueOf(currentPatient.getPatientID()));
                     showDialog.showInformationDialog("Запис про пацієнта успішно створена", patientCabinet);
+                    medicalCardOfAmbulatoryPatient.setVisible(true);
+                    medicalCardOfAmbulatoryPatient.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            MainController mainController = context.getBean(MainController.class);
+                            MedicalCardController medicalCardController = context.getBean(MedicalCardController.class);
+                            medicalCardController.setCard(currentPatient.getAmbulatoryCard());
+                            mainController.setContent(medicalCardController, "/fxml/medicalCard.fxml");
+                            mainController.addBreadCrumb("Кабінет пацієнта", patientCabinet, 1);
+                        }
+                    });
                 } else {
                     dao.updatePatient(currentPatient);
                     if (currentPatient.getLastCard() != null) {
@@ -190,6 +201,7 @@ public class PatientCabinetController {
                     if (optional.isPresent()) {
                         Card card = optional.get();
                         card.setPatientID(Integer.parseInt(patientID.getText()));
+                        card.setCardType(STATIONARY);
                         dao.createCard(card);
                         medicalCardsForStationaryPatientsContainer.getChildren().add(getCardButton(card));
                         currentPatient.addCard(card);
@@ -239,11 +251,14 @@ public class PatientCabinetController {
         MainController mainController = context.getBean(MainController.class);
         mainController.breadCrumbsContainer.getChildren().clear();
         mainController.content.setContent(patientCabinet);
+        medicalCardOfAmbulatoryPatient.setVisible(false);
     }
 
     public void setPatient(Patient patient) {
         removePatient();
         currentPatient = patient;
+        medicalCardOfAmbulatoryPatient.setVisible(true);
+        medicalCardOfAmbulatoryPatient.addEventHandler(MouseEvent.MOUSE_CLICKED, getEventHandler(patient.getAmbulatoryCard()));
         patientID.setText(String.valueOf(patient.getPatientID()));
         fullName.setText(patient.getFullName());
         passportID.setText(patient.getPassportID());
@@ -281,7 +296,15 @@ public class PatientCabinetController {
     private JFXButton getCardButton(Card card) {
         JFXButton newCard = new JFXButton(String.format("№ = %s\n Тиждень лікування = %s\n Дата виписки = %tF\n Дата госпіталізації = %tF",
                 card.getCardNumber(), card.getWeek(), card.getDateOut(), card.getDateIn()));
-        newCard.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        newCard.addEventHandler(MouseEvent.MOUSE_CLICKED, getEventHandler(card));
+        newCard.setPrefHeight(91);
+        newCard.setMinWidth(100);
+        newCard.setMaxHeight(200);
+        return newCard;
+    }
+
+    private EventHandler<MouseEvent> getEventHandler(Card card) {
+        return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 MainController mainController = context.getBean(MainController.class);
@@ -290,11 +313,7 @@ public class PatientCabinetController {
                 mainController.setContent(medicalCardController, "/fxml/medicalCard.fxml");
                 mainController.addBreadCrumb("Кабінет пацієнта", patientCabinet, 1);
             }
-        });
-        newCard.setPrefHeight(91);
-        newCard.setMinWidth(100);
-        newCard.setMaxHeight(200);
-        return newCard;
+        };
     }
 
     public Patient getCurrentPatient() {

@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXRadioButton?>
-<?import com.jfoenix.controls.JFXTextArea?>
-<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-
-<AnchorPane fx:id="patientCabinet" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1011.0" prefWidth="1222.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sumdu.hospital.controller.PatientCabinetController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="patientCabinet" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1011.0" prefWidth="1222.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sumdu.hospital.controller.PatientCabinetController">
     <GridPane hgap="15.0" layoutX="14.0" layoutY="14.0" maxWidth="1.7976931348623157E308" prefHeight="978.0" prefWidth="1218.0" vgap="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
         <columnConstraints>
             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="372.0" minWidth="10.0" prefWidth="236.0" />
@@ -42,7 +30,6 @@
             <RowConstraints maxHeight="141.0" minHeight="7.0" prefHeight="52.0" valignment="BOTTOM" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="178.0" minHeight="10.0" prefHeight="102.0" valignment="BOTTOM" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="149.0" minHeight="10.0" prefHeight="65.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="97.0" minHeight="7.0" prefHeight="51.0" vgrow="SOMETIMES" />
         </rowConstraints>
         <Label prefHeight="21.0" text="ПІБ:" GridPane.valignment="BOTTOM" />
         <Label text="Номер документа (паспорта):" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
@@ -85,7 +72,7 @@
                 <HBox fx:id="medicalCardsForStationaryPatientsContainer" alignment="CENTER_LEFT" layoutX="69.0" spacing="3.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </AnchorPane>
         </ScrollPane>
-        <TextField fx:id="patientID" prefHeight="25.0" prefWidth="178.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+        <TextField fx:id="patientID" prefHeight="14.0" prefWidth="303.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="15" />
         <JFXTextField fx:id="fullName" GridPane.columnIndex="1" GridPane.columnSpan="3" />
         <JFXTextField fx:id="passportID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <JFXDatePicker fx:id="dateOfBirth" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -102,8 +89,16 @@
         <JFXDatePicker fx:id="pvtEnd" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.rowIndex="12" />
         <JFXDatePicker fx:id="repeatPvtStart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="13" />
         <JFXDatePicker fx:id="repeatPvtEnd" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.rowIndex="13" />
-        <JFXButton fx:id="medicalCardOfAmbulatoryPatient" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-        <JFXButton fx:id="save" buttonType="RAISED" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Зберегти" GridPane.columnIndex="3" GridPane.rowIndex="16">
+        <JFXButton fx:id="medicalCardOfAmbulatoryPatient" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="65.0" prefWidth="187.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="15">
+
+            <graphic>
+                <MaterialDesignIconView fill="#009688" glyphName="CLIPBOARD_ACCOUNT" size="40" />
+            </graphic>
+         <GridPane.margin>
+            <Insets right="150.0" />
+         </GridPane.margin>
+        </JFXButton>
+        <JFXButton fx:id="save" buttonType="RAISED" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="BLACK" text="Зберегти" GridPane.columnIndex="3" GridPane.rowIndex="15">
             <graphic>
                 <MaterialDesignIconView glyphName="CHECK_CIRCLE_OUTLINE" size="20" />
             </graphic>

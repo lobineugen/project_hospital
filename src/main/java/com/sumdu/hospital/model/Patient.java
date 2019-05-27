@@ -24,6 +24,7 @@ public class Patient extends RecursiveTreeObject<Patient> {
     private Date repeatPvtEnd;
     private String allergicReactions;
     private String ogkSurvey;
+    private Card ambulatoryCard;
 
     public Patient(int patientID, String fullName, String passportID)  {
         this.patientID = patientID;
@@ -208,5 +209,13 @@ public class Patient extends RecursiveTreeObject<Patient> {
 
     public void setOgkSurvey(String ogkSurvey) {
         this.ogkSurvey = ogkSurvey;
+    }
+
+    public Card getAmbulatoryCard() {
+        return ambulatoryCard;
+    }
+
+    public void setAmbulatoryCard(Card ambulatoryCard) {
+        this.ambulatoryCard = ambulatoryCard;
     }
 }

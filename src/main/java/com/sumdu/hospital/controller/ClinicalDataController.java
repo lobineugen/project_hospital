@@ -39,8 +39,8 @@ public class ClinicalDataController {
 
     @FXML
     public void initialize() {
-        listView.setItems(helper.initListView(card.getClinicalData(), CLINICAL_DATA));
         listView.setCellFactory(param -> new CheckBoxListCell());
+        listView.setItems(helper.initListView(card.getClinicalData(), CLINICAL_DATA));
         listView.getChildrenUnmodifiable().clear();
         save.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override

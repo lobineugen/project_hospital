@@ -109,7 +109,6 @@ public class AllPatientsController {
         });
         treeTableView.setContextMenu(contextMenu);
         treeTableView.setShowRoot(false);
-
     }
 
     private void initializeEventHandlers() {

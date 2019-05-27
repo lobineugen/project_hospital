@@ -24,6 +24,8 @@ public class Constants {
     public static final Map<String, String> EPIDEMIOLOGICAL_HISTORY = new LinkedHashMap<>();
     public static final Map<String, String> CLINICAL_DATA = new LinkedHashMap<>();
     public static Map<String, Map<String, String>> analyzesTypesToFields = new LinkedHashMap<>();
+    public static final String STATIONARY = "STATIONARY";
+    public static final String AMBULATORY = "AMBULATORY";
 
     static {
         EPIDEMIOLOGICAL_HISTORY.put("1", "Рецепієнт Крові");

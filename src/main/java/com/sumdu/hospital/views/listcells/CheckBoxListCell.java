@@ -49,7 +49,6 @@ public class CheckBoxListCell extends JFXListCell<CheckBoxValue> {
 
     @Override
     protected void updateItem(CheckBoxValue item, boolean empty) {
-        super.updateItem(item, empty);
         this.item = item;
         setText(null);
         if (empty || item == null) {
@@ -58,9 +57,6 @@ public class CheckBoxListCell extends JFXListCell<CheckBoxValue> {
             textField.setText(item.getLabel());
             if (item.isValue()) {
                 checkBox.setSelected(true);
-            }
-            if (!item.getId().startsWith("c")){
-                textField.setEditable(false);
             }
             checkBox.setId(String.valueOf(item.getId()));
             setGraphic(pane);
