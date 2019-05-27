@@ -17,7 +17,7 @@
          <children>
             <StackPane>
                <children>
-                  <JFXDatePicker promptText="Дата" StackPane.alignment="CENTER_LEFT">
+                  <JFXDatePicker fx:id="date" promptText="Дата" StackPane.alignment="CENTER_LEFT">
                      <StackPane.margin>
                         <Insets />
                      </StackPane.margin>

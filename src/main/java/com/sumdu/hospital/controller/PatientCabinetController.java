@@ -288,7 +288,7 @@ public class PatientCabinetController {
                 MedicalCardController medicalCardController = context.getBean(MedicalCardController.class);
                 medicalCardController.setCard(card);
                 mainController.setContent(medicalCardController, "/fxml/medicalCard.fxml");
-                mainController.addBreadCrumb("Кабиент пациента", patientCabinet, 1);
+                mainController.addBreadCrumb("Кабінет пацієнта", patientCabinet, 1);
             }
         });
         newCard.setPrefHeight(91);

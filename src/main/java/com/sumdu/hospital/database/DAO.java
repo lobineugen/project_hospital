@@ -1,15 +1,13 @@
 package com.sumdu.hospital.database;
 
-import com.sumdu.hospital.model.Card;
-import com.sumdu.hospital.model.ExpertConsultation;
-import com.sumdu.hospital.model.Patient;
+import com.sumdu.hospital.model.*;
 
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
 public interface DAO {
-   Connection getConnection();
+    Connection getConnection();
 
     void closeConnection();
 
@@ -32,5 +30,14 @@ public interface DAO {
     void createExpertConsultation(ExpertConsultation expertConsultation);
 
     void updateExpertConsultation(ExpertConsultation expertConsultation);
+
+    boolean createAnalysis(Analysis analysis);
+
+    boolean updateAnalysis(Analysis analysis);
+
+    List<Analysis> getAnalyzes(String analysisType, int cardID);
+
+    List<AnalysisParameter> getAnalysisParams(int analysisId);
+
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Analysis {
     private int cardID;
+    private int analysisId;
     private String type;
     private Date date;
     private List<AnalysisParameter> parameters;
@@ -39,5 +40,13 @@ public class Analysis {
 
     public void setCardID(int cardID) {
         this.cardID = cardID;
+    }
+
+    public int getAnalysisId() {
+        return analysisId;
+    }
+
+    public void setAnalysisId(int analysisId) {
+        this.analysisId = analysisId;
     }
 }

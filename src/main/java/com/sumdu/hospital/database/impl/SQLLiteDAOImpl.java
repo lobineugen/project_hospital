@@ -1,9 +1,7 @@
 package com.sumdu.hospital.database.impl;
 
 import com.sumdu.hospital.database.DAO;
-import com.sumdu.hospital.model.Card;
-import com.sumdu.hospital.model.ExpertConsultation;
-import com.sumdu.hospital.model.Patient;
+import com.sumdu.hospital.model.*;
 import com.sumdu.hospital.service.Helper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +59,8 @@ public class SQLLiteDAOImpl implements DAO {
         config.enforceForeignKeys(false);
         try {
             connection = DriverManager.getConnection(url + dataBaseName, config.toProperties());
+            PreparedStatement ps = connection.prepareStatement("PRAGMA foreign_keys=ON");
+            ps.execute();
             if (!connection.isClosed()) {
                 return connection;
             }
@@ -178,6 +178,10 @@ public class SQLLiteDAOImpl implements DAO {
                 preparedStatement = connection.prepareStatement("DELETE FROM sm_patients WHERE patientID = ?");
             } else if (object instanceof ExpertConsultation) {
                 preparedStatement = connection.prepareStatement("DELETE FROM sm_expert_consultations WHERE consID = ?");
+            } else if (object instanceof Analysis) {
+                preparedStatement = connection.prepareStatement("DELETE FROM sm_analyzes WHERE analysisId = ?");
+            } else if (object instanceof AnalysisParameter) {
+                preparedStatement = connection.prepareStatement("DELETE FROM sm_analyzes_params WHERE paramId = ?");
             }
             Objects.requireNonNull(preparedStatement).setInt(1, id);
             preparedStatement.execute();
@@ -351,11 +355,115 @@ public class SQLLiteDAOImpl implements DAO {
         closeConnection();
     }
 
+    @Override
+    public boolean createAnalysis(Analysis analysis) {
+        getConnection();
+        boolean result;
+        try{
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO sm_analyzes VALUES (?,?,?,?)");
+            ps.setInt(1, analysis.getAnalysisId());
+            ps.setInt(2, analysis.getCardID());
+            ps.setString(3, analysis.getType());
+            ps.setDate(4, analysis.getDate());
+            ps.execute();
+
+            for (AnalysisParameter parameter : analysis.getParameters()) {
+                PreparedStatement ps1 = connection.prepareStatement("INSERT INTO sm_analyzes_params VALUES (?,?,?,?,?)");
+                ps1.setInt(1, parameter.getId());
+                ps1.setInt(2, analysis.getAnalysisId());
+                ps1.setDate(3, parameter.getParamDate());
+                ps1.setString(4, parameter.getAttr());
+                ps1.setString(5, parameter.getValue());
+                ps1.execute();
+            }
+            result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        }
+        closeConnection();
+        return result;
+    }
+
+    @Override
+    public boolean updateAnalysis(Analysis analysis) {
+        getConnection();
+        boolean result;
+        try{
+            /*PreparedStatement ps = connection.prepareStatement("INSERT INTO sm_analyzes VALUES (?,?,?,?)");
+            ps.setInt(1, analysis.getAnalysisId());
+            ps.setInt(2, analysis.getCardID());
+            ps.setDate(3, analysis.getDate());
+            ps.setString(4, analysis.getType());
+            ps.execute();
+
+            for (AnalysisParameter parameter : analysis.getParameters()) {
+                PreparedStatement ps1 = connection.prepareStatement("INSERT INTO sm_analyzes_params VALUES (?,?,?,?,?)");
+                ps1.setInt(1, parameter.getId());
+                ps1.setInt(2, analysis.getAnalysisId());
+                ps1.setDate(3, parameter.getParamDate());
+                ps1.setString(4, analysis.getType());
+                ps1.setString(5, analysis.getType());
+                ps.execute();
+            }*/
+            result = true;
+        } catch (Exception e) {
+            result = false;
+        }
+        closeConnection();
+        return result;
+    }
+
+    @Override
+    public List<Analysis> getAnalyzes(String analysisType, int cardID) {
+        getConnection();
+        List<Analysis> analyzes = new ArrayList<>();
+        try{
+            PreparedStatement ps  = connection.prepareStatement("select * from sm_analyzes where analysisType = ? and cardID = ?");
+            ps.setString(1, analysisType);
+            ps.setInt(2, cardID);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Analysis analysis = new Analysis();
+                analysis.setAnalysisId(resultSet.getInt("analysisId"));
+                analysis.setCardID(resultSet.getInt("cardID"));
+                analysis.setDate(resultSet.getDate("analysisDate"));
+                analysis.setType(resultSet.getString("analysisType"));
+                analyzes.add(analysis);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+        return analyzes;
+    }
+
+    @Override
+    public List<AnalysisParameter> getAnalysisParams(int analysisId) {
+        getConnection();
+        List<AnalysisParameter> analysisParams = new ArrayList<>();
+        try{
+            PreparedStatement ps  = connection.prepareStatement("select * from sm_analyzes_params where analysisId = ?");
+            ps.setInt(1, analysisId);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                AnalysisParameter analysisParameter = new AnalysisParameter();
+                analysisParameter.setId(resultSet.getInt("paramId"));
+                analysisParameter.setParamDate(resultSet.getDate("paramDate"));
+                analysisParameter.setAttr(resultSet.getString("attrName"));
+                analysisParameter.setValue(resultSet.getString("value"));
+                analysisParams.add(analysisParameter);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+        return analysisParams;
+    }
+
     @Autowired
     public void context(ApplicationContext context) {
         this.context = context;
     }
-
-
 }
 

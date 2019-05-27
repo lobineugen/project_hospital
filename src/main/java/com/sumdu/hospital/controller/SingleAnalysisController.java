@@ -1,6 +1,7 @@
 package com.sumdu.hospital.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
@@ -12,6 +13,7 @@ import com.sumdu.hospital.database.DAO;
 import com.sumdu.hospital.model.Analysis;
 import com.sumdu.hospital.model.AnalysisParameter;
 import com.sumdu.hospital.model.Card;
+import com.sumdu.hospital.service.Helper;
 import com.sumdu.hospital.service.ShowDialog;
 import com.sumdu.hospital.views.CreateExpertConsultationDialog;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,9 +22,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -32,6 +34,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.Map;
 
 @Controller
@@ -39,6 +42,8 @@ public class SingleAnalysisController {
     private Stage stage;
     @FXML
     private StackPane stackPane;
+    @FXML
+    private JFXDatePicker date;
     @FXML
     private JFXButton save;
     @FXML
@@ -57,12 +62,9 @@ public class SingleAnalysisController {
     private ObservableList<AnalysisParameter> params;
 
     @Autowired
-    public void dao(DAO dao) {
+    public SingleAnalysisController(ShowDialog showDialog, DAO dao, ApplicationContext context) {
+        this.showDialog = showDialog;
         this.dao = dao;
-    }
-
-    @Autowired
-    public void context(ApplicationContext context) {
         this.context = context;
     }
 
@@ -83,6 +85,8 @@ public class SingleAnalysisController {
             this.windowType = windowType;
 
             if (windowType == WindowType.EDIT) {
+                date.setValue(analysis.getDate().toLocalDate());
+                analysis.setParameters(dao.getAnalysisParams(analysis.getAnalysisId()));
                 params = FXCollections.observableArrayList(analysis.getParameters());
             } else {
                 params = FXCollections.observableArrayList();
@@ -104,6 +108,7 @@ public class SingleAnalysisController {
             paramValue.setOnEditCommit((TreeTableColumn.CellEditEvent<AnalysisParameter, String> t)->{
                 ((AnalysisParameter) t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue())
                     .setValue(t.getNewValue());
+                analysisTableView.getSelectionModel().selectBelowCell();
             });
 
             paramName.setText("Найменування");
@@ -129,17 +134,28 @@ public class SingleAnalysisController {
     }
 
     @FXML
-    public void initialize() {
-
-    }
-
-    @FXML
     void onSaveClick() {
         analysis.setParameters(params);
         if (windowType == WindowType.CREATE) {
-            //insert analysis
+            Helper helper = context.getBean(Helper.class);
+            analysis.setAnalysisId(helper.getUniqueID());
+            if (date.getValue() != null) {
+                analysis.setDate(Date.valueOf(date.getValue()));
+            }
+            for (AnalysisParameter param : analysis.getParameters()) {
+                param.setId(helper.getUniqueID());
+            }
+            if (dao.createAnalysis(analysis)) {
+                showDialog.showInformationDialog("Аналіз збережено", stackPane);
+            } else {
+                showDialog.showErrorDialog("Не вдається збеоегти аналіз", null,  stackPane);
+            }
         } else {
-            //update analysis
+            if (dao.updateAnalysis(analysis)) {
+                showDialog.showInformationDialog("Аналіз збережено", stackPane);
+            } else {
+                showDialog.showErrorDialog("Не вдається збеоегти аналіз", null,  stackPane);
+            }
         }
         stage.close();
     }

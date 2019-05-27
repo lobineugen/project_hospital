@@ -69,6 +69,31 @@ CREATE TABLE IF NOT EXISTS sm_expert_consultations
 CREATE INDEX IF NOT EXISTS sm_expert_consultations_idx_1
   ON sm_expert_consultations (consID ASC);
 
+-- Table: sm_analyzes
+CREATE TABLE IF NOT EXISTS sm_analyzes (
+    analysisId INTEGER
+     CONSTRAINT sm_analyzes_pk PRIMARY KEY,
+    cardID INTEGER NOT NULL,
+    analysisType TEXT,
+    analysisDate DATE,
+    CONSTRAINT sm_analyzes_sm_cards FOREIGN KEY (cardID)
+    REFERENCES sm_cards (cardID)
+     ON DELETE CASCADE
+);
+
+-- Table: sm_analyzes_params
+CREATE TABLE IF NOT EXISTS sm_analyzes_params (
+    paramId INTEGER
+     CONSTRAINT sm_analyzes_params_pk PRIMARY KEY,
+    analysisId INTEGER NOT NULL,
+    paramDate DATE,
+    attrName TEXT,
+    value TEXT,
+    CONSTRAINT sm_analyzes_params_sm_analyzes FOREIGN KEY (analysisId)
+    REFERENCES sm_analyzes (analysisId)
+    ON DELETE CASCADE
+);
+
 CREATE TABLE sequence
 (
   id INTEGER

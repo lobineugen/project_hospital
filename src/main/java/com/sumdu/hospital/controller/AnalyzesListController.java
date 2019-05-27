@@ -18,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
-import java.sql.Date;
-
 @Controller
 public class AnalyzesListController {
     @FXML
@@ -73,33 +71,27 @@ public class AnalyzesListController {
 
     private void initTable() {
         analysesList.clear();
-        //TODO load all analyzes where cardID = ? and analysisType = ?
-        Analysis a = new Analysis();
-        a.setDate(new Date(new java.util.Date().getTime()));
-        analysesList.add(a);
-        /*if (card.getExpertConsultationList() != null) {
-            expertConsultations.addAll(card.getExpertConsultationList());
-        }*/
+        analysesList.addAll(dao.getAnalyzes(analysisType, card.getCardID()));
         listView.setItems(analysesList);
     }
 
     private void initializeEventHandlers() {
-        addButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                context.getBean(LabDiagnosticsController.class)
-                        .createNewWindowWithSingleAnalysis(analysisType, vBox)/*oevent -> {
+        addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             SingleAnalysisController controller = context.getBean(SingleAnalysisController.class);
             Analysis analysis = new Analysis();
             analysis.setType(analysisType);
+            analysis.setCardID(card.getCardID());
             controller.init(vBox.getScene().getWindow(), card, analysis, WindowType.CREATE);
             controller.show();
-        }*/);
+            initTable();
+        });
         deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (listView.getSelectionModel().isEmpty()) {
                 showDialog.showInformationDialog("Нічого не вибрано. Видалення неможливо!", vBox);
                 return;
             }
             Analysis analysis = listView.getSelectionModel().getSelectedItem();
-            //dao.delete
+            dao.deleteByID(analysis.getAnalysisId(), analysis);
             analysesList.remove(analysis);
             showDialog.showInformationDialog("Запис усішно вилучено!", vBox);
         });
@@ -111,6 +103,7 @@ public class AnalyzesListController {
             SingleAnalysisController controller = context.getBean(SingleAnalysisController.class);
             controller.init(vBox.getScene().getWindow(), card, analysis, WindowType.EDIT);
             controller.show();
+            initTable();
         });
     }
 

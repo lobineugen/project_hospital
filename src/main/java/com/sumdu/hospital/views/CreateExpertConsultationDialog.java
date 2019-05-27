@@ -47,27 +47,6 @@ public class CreateExpertConsultationDialog {
             stage.setScene(new Scene(vbox));
 
             stage.setTitle("Вікно створення");
-
-            /*this.setHeaderText("Заповніть всі поля щоб створити новий запис");
-            Image img = new Image(CreateExpertConsultationDialog.class.getResource("/img/icon_create.png").toString());
-            ImageView imageView = new ImageView(img);
-            imageView.setFitHeight(50);
-            imageView.setFitWidth(50);
-            this.setGraphic(imageView);*/
-
-
-
-            /*ButtonType createButtonType = new ButtonType("Створити", ButtonBar.ButtonData.OK_DONE);
-            this.getDialogPane().getButtonTypes().addAll(createButtonType, ButtonType.CANCEL);*/
-           /* this.setResultConverter(param -> {
-                System.out.println(param);
-                if (param.equals(createButtonType)) {
-                    return new ExpertConsultation(Date.valueOf(date.getValue()),
-                            expert.getText(),
-                            conclusion.getText());
-                }
-                return null;
-            });*/
         } catch (IOException e) {
             e.printStackTrace();
         }
